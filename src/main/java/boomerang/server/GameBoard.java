@@ -13,10 +13,12 @@ public class GameBoard {
 
     ArrayList<ClientData> clientData;
     ArrayList<Player> players;
+    DeckHandler deckHandler;
 
     public GameBoard(){
         this.clientData = new ArrayList<ClientData>();
         this.players = new ArrayList<Player>();
+
 
         this.currentRound = 1;
         this.currentDraft = 1;
