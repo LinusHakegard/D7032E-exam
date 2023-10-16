@@ -1,23 +1,20 @@
-package boomerang.server;
+package boomerang.deckhandling;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-
+import boomerang.cards.Card;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class DeckHandler extends Deck {
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 
-    public DeckHandler() {
-
-    }
-    public ArrayList<Card> createAustraliaCardsFromJSONFile() {
+public class AustraliaCardLoaderJSON implements iDeckLoader {
+    public ArrayList<Card> createCards(){
         ArrayList<Card> cards = new ArrayList<>();
         String jsonFilePath = "src/main/resources/AustraliaCards.json";
-        try {
+            try {
             JSONParser parser = new JSONParser();
             JSONArray jsonData = (JSONArray) parser.parse(new FileReader(jsonFilePath));
 
@@ -47,32 +44,6 @@ public class DeckHandler extends Deck {
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-        return cards;
-    }
-
-    public ArrayList<Card> getPicks(Deck deck, int amount){
-        ArrayList<Card> picks = new ArrayList<Card>();
-        for(int i=0; i<amount; i++){
-            picks.add(deck.getFirstCard());
-            deck.removeFirstCard();
-        }
-        return picks;
-    }
-    public static void main(String[] args) {
-        Deck deck = new Deck();
-        DeckHandler deckHandler = new DeckHandler();
-        deck.setDeck(deckHandler.createAustraliaCardsFromJSONFile());
-        //ArrayList<Card> testHand = deckHandler.getPicks(deck,1);
-
-        for (Card card : deck.cards) {
-            System.out.println("Name: " + card.getName());
-            System.out.println("Number: " + card.getNumber());
-            System.out.println("Site: " + card.getSite());
-            System.out.println("Region: " + card.getRegion());
-            System.out.println("Collection: " + card.getCollection());
-            System.out.println("Animal: " + card.getAnimal());
-            System.out.println("Activity: " + card.getActivity());
-            System.out.println();
-        }
+            return cards;
     }
 }

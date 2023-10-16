@@ -1,5 +1,10 @@
 package boomerang.server;
 
+
+
+import boomerang.cards.GameBoardDeck;
+import boomerang.deckhandling.AustraliaCardLoaderJSON;
+
 import java.util.ArrayList;
 
 
@@ -13,12 +18,14 @@ public class GameBoard {
 
     ArrayList<ClientData> clientData;
     ArrayList<Player> players;
-    DeckHandler deckHandler;
+
+    GameBoardDeck gameBoardDeck;
 
     public GameBoard(){
         this.clientData = new ArrayList<ClientData>();
         this.players = new ArrayList<Player>();
 
+        this.gameBoardDeck = new GameBoardDeck();
 
         this.currentRound = 1;
         this.currentDraft = 1;
@@ -30,7 +37,15 @@ public class GameBoard {
         this.players.add(player);
     }
 
+    private void initGame(){
+        //setting up decks
+        AustraliaCardLoaderJSON cardLoader = new AustraliaCardLoaderJSON();
+        gameBoardDeck.setDeck(cardLoader.createCards());
+
+    }
+
     public void runner(){
+        initGame();
         RoundHandler roundHandler = new RoundHandler(clientData);
         while(this.TOTAL_ROUNDS <= 4) {
             roundHandler.notifyPlayersOfRoundStart();
