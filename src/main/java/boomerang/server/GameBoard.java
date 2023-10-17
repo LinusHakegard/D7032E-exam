@@ -2,7 +2,6 @@ package boomerang.server;
 
 
 
-import boomerang.cards.Card;
 import boomerang.cards.DrawDeck;
 import boomerang.cards.GameBoardDeck;
 import boomerang.deckhandling.AustraliaCardLoaderJSON;
@@ -99,9 +98,10 @@ public class GameBoard {
         RoundHandler roundHandler = new RoundHandler(clientData);
         while(this.TOTAL_ROUNDS <= 4) {
             newRoundSetup();
-            roundHandler.startRound(this.players, this.drawDecks);
+            roundHandler.run(this.players, this.drawDecks);
             while(this.currentRound <= this.ROUND_LENGTH){
-                roundHandler.startRound(this.players, this.drawDecks);
+                roundHandler.run(this.players, this.drawDecks);
+                //roundHandler.rotateCards(this.drawCards);
             }
         }
     }

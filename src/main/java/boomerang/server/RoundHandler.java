@@ -39,8 +39,31 @@ public class RoundHandler {
             messageToClientSender.sendMessageToPlayers(clientData.outToClient, "Pick a card to keep " + availableCards);
         }
     }
+    public void rotateDrawDeck(ArrayList<DrawDeck> drawDecks){
+        int highestPlayerID = -1;
 
-    public void startRound(ArrayList<Player> players, ArrayList<DrawDeck> drawDecks) {
+        // Find the highest playerID
+        for (DrawDeck drawDeck : drawDecks) {
+            if (drawDeck.getPlayerID() > highestPlayerID) {
+                highestPlayerID = drawDeck.getPlayerID();
+            }
+        }
+
+        // Increment playerIDs by 1 and wrap around if needed
+        for (DrawDeck drawDeck : drawDecks) {
+            int newPlayerID = drawDeck.getPlayerID() + 1;
+
+            // Check if newPlayerID exceeds the highest, reset to 0
+            if (newPlayerID > highestPlayerID) {
+                newPlayerID = 0;
+            }
+
+            drawDeck.setPlayerID(newPlayerID);
+        }
+    }
+
+
+    public void run(ArrayList<Player> players, ArrayList<DrawDeck> drawDecks) {
         notifyPlayersOfRoundStart(drawDecks);
 
         ArrayList<String> messages = new ArrayList<>();
@@ -101,7 +124,7 @@ public class RoundHandler {
             System.out.println("Activity: " + card.getActivity());
             System.out.println();
         }
-
+        rotateDrawDeck(drawDecks);
         System.out.println("Round finished\n");
     }
 }
