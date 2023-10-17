@@ -29,5 +29,6 @@ public class DrawDeck extends Deck implements iAddableCardDeck{
             }
         }
     }
+    public int getPlayerID(){return this.playerID;}
 
 }

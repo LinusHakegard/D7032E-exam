@@ -10,4 +10,5 @@ public class Player {
         this.playerDeck = new PlayerDeck();
     }
     public PlayerDeck getPlayerDeck(){return this.playerDeck;}
+    public int getPlayerID(){return this.playerID;}
 }
