@@ -7,17 +7,24 @@ import java.util.ArrayList;
 
 public class RoundHandler {
     private ArrayList<ClientData> clientData;
-
+    private ArrayList<String> testArray = new ArrayList<String>();
     public RoundHandler(ArrayList<ClientData> clientData) {
         this.clientData = clientData;
     }
 
     public void notifyPlayersOfRoundStart(){
-        MessageToClientsSender messageToClientsSender = new MessageToClientsSender(clientData);
-        messageToClientsSender.sendMessageToPlayers("Pick a card to keep");
+        for(ClientData clientData : this.clientData) {
+            MessageToClientSender messageToClientSender = new MessageToClientSender();
+            //messageToClientSender.sendMessageToPlayers(clientData.outToClient,) skicka data om korten
+
+            messageToClientSender.sendMessageToPlayers(clientData.outToClient, "Pick a card to keep ");
+        }
     }
 
-    public void startRound() {
+    public void startRound(ArrayList<Player> players) {
+        notifyPlayersOfRoundStart(
+
+        );
         ExecutorService threadpool = Executors.newFixedThreadPool(clientData.size());
         for (int p = 0; p < clientData.size(); p++) {
             final int currentPlayerIndex = p;
@@ -29,6 +36,9 @@ public class RoundHandler {
 
                     String message = messageFromClient.waitForMessage();
                     System.out.print("Player " + currentPlayerIndex + " picked: " + message + "\n");
+
+                     //players.get(currentPlayerIndex).getPlayerDeck().drawCard(card);
+                    System.out.println(testArray);
                 }
             };
             threadpool.execute(task);

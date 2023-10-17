@@ -2,9 +2,9 @@ package boomerang.deckhandling;
 
 import boomerang.cards.*;
 
-public class GameboardCardMovement implements iCardMovement{
-    public void moveCard (GameBoardDeck gameBoardDeck, iAddableCardDeck drawDeck){
-        drawDeck.drawCard(gameBoardDeck.getFirstCard());
+public class GameboardCardMovement{
+    public void moveCard (GameBoardDeck gameBoardDeck, iAddableCardDeck moveToDeck){
+        moveToDeck.drawCard(gameBoardDeck.getFirstCard());
         gameBoardDeck.removeFirstCard();
     }
 }

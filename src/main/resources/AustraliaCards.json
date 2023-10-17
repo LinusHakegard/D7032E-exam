@@ -1,8 +1,8 @@
  [
     {
-      "name": "John",
+      "name": "Emil",
       "number": 5,
-      "site": "B",
+      "site": "A",
       "region": "123 Main St",
       "collection": "Shell",
       "animal": "frog",
@@ -17,5 +17,34 @@
       "animal": "frog",
       "activity": "bushwalking"
 
-    }
+    },
+   {
+     "name": "Jacob",
+     "number": 5,
+     "site": "C",
+     "region": "123 Main St",
+     "collection": "Shell",
+     "animal": "frog",
+     "activity": "bushwalking"
+   },
+   {
+     "name": "Alex",
+     "number": 9,
+     "site": "D",
+     "region": "123 Main St",
+     "collection": "Shell",
+     "animal": "frog",
+     "activity": "bushwalking"
+
+   },
+   {
+     "name": "Sebbe",
+     "number": 9,
+     "site": "E",
+     "region": "123 Main St",
+     "collection": "Shell",
+     "animal": "frog",
+     "activity": "bushwalking"
+
+   }
   ]
