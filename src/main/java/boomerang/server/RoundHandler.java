@@ -42,6 +42,9 @@ public class RoundHandler {
 
     public void startRound(ArrayList<Player> players, ArrayList<DrawDeck> drawDecks) {
         notifyPlayersOfRoundStart(drawDecks);
+
+        ArrayList<String> messages = new ArrayList<>();
+
         ExecutorService threadpool = Executors.newFixedThreadPool(clientData.size());
         for (int p = 0; p < clientData.size(); p++) {
             final int currentPlayerIndex = p;
@@ -52,34 +55,8 @@ public class RoundHandler {
                     MessageFromClientReceiver messageFromClient = new MessageFromClientReceiver(inFromClient);
 
                     String message = messageFromClient.waitForMessage();
-
-
-                    Player player = players.get(currentPlayerIndex);
-                    PlayerDeck playerDeck = player.getPlayerDeck();
-                    DrawDeck drawDeck = null;
-                    for(DrawDeck curDrawDeck : drawDecks){
-                        if(curDrawDeck.getPlayerID() == player.getPlayerID()){
-                            drawDeck = curDrawDeck;
-                        }
-                    }
-                    for(Card card : drawDecks.get(currentPlayerIndex).getCards()){
-                        if(card.getSite().equals(message)){
-                            DrawDeckCardMovement drawDeckCardMovement = new DrawDeckCardMovement();
-                            drawDeckCardMovement.moveCard(drawDeck, playerDeck, card.getSite());
-                        }
-
-                    }
+                    messages.add(message + Integer.toString(currentPlayerIndex));
                     System.out.print("Player " + currentPlayerIndex + " picked: " + message + "\n");
-                    for (Card card : player.getPlayerDeck().getCards()) {
-                        System.out.println("Name: " + card.getName());
-                        System.out.println("Number: " + card.getNumber());
-                        System.out.println("Site: " + card.getSite());
-                        System.out.println("Region: " + card.getRegion());
-                        System.out.println("Collection: " + card.getCollection());
-                        System.out.println("Animal: " + card.getAnimal());
-                        System.out.println("Activity: " + card.getActivity());
-                        System.out.println();
-                    }
                 }
             };
             threadpool.execute(task);
@@ -93,6 +70,38 @@ public class RoundHandler {
                 throw new RuntimeException(e);
             }
         }
+
+        for(int i=0; i<messages.size(); i++){
+            String message = messages.get(i);
+            DrawDeck moveFromDrawDeck = null;
+            String cardSite;
+            for(DrawDeck drawDeck :drawDecks){
+                for(Card card : drawDeck.getCards()){
+                    if(card.getSite().equals(String.valueOf(message.charAt(0)))){
+                        moveFromDrawDeck = drawDeck;
+                        break;
+                    }
+                }
+            }
+
+            DrawDeckCardMovement drawDeckCardMovement = new DrawDeckCardMovement();
+            System.out.println(message.charAt(1));
+            PlayerDeck moveToPlayerDeck = players.get(Character.getNumericValue(message.charAt(1))).getPlayerDeck();
+            String site = String.valueOf(message.charAt(0));
+
+            drawDeckCardMovement.moveCard(moveFromDrawDeck, moveToPlayerDeck, site);
+        }
+        for (Card card : players.get(0).getPlayerDeck().getCards()) {
+            System.out.println("Name: " + card.getName());
+            System.out.println("Number: " + card.getNumber());
+            System.out.println("Site: " + card.getSite());
+            System.out.println("Region: " + card.getRegion());
+            System.out.println("Collection: " + card.getCollection());
+            System.out.println("Animal: " + card.getAnimal());
+            System.out.println("Activity: " + card.getActivity());
+            System.out.println();
+        }
+
         System.out.println("Round finished\n");
     }
 }
