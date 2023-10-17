@@ -26,8 +26,16 @@ public class GameClient {
                 System.out.println(nextMessage);
 
                 if(nextMessage.contains("Type") || nextMessage.contains("keep")) {
+
                     Scanner in = new Scanner(System.in);
-                    outToServer.writeObject(in.nextLine());
+                    String inputLine = "MESSAGE WILL NOT CONTAIN THIS";
+                    while(!nextMessage.contains("*"+inputLine)){
+                        if(inputLine != "MESSAGE WILL NOT CONTAIN THIS"){
+                            System.out.println("Invalid Input");
+                        }
+                        inputLine = in.nextLine();
+                    }
+                    outToServer.writeObject(inputLine);
                 }
             }
 
