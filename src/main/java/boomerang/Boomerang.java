@@ -10,7 +10,7 @@ public class Boomerang {
 
         if(args.length == 3){
             try{
-                GameServer server = new GameServer(Integer.parseInt(args[0]));
+                GameServer server = new GameServer(Integer.parseInt(args[0]),args[2]);
                 server.waitForPlayers();
             }
             catch(IOException e){

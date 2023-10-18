@@ -6,9 +6,9 @@ import java.net.*;
 public class GameServer {
     int numberPlayers;
     GameBoard gameBoard;
-    public GameServer(int numberPlayers){
+    public GameServer(int numberPlayers, String country){
         this.numberPlayers = numberPlayers;
-        this.gameBoard = new GameBoard();
+        this.gameBoard = new GameBoard(country);
     }
     public void waitForPlayers() throws Exception{
         final int PORT = 2048;

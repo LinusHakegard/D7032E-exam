@@ -2,6 +2,7 @@ package boomerang.server;
 
 
 
+import boomerang.australia.AustraliaActivities;
 import boomerang.cards.DrawDeck;
 import boomerang.cards.GameBoardDeck;
 import boomerang.deckhandling.AustraliaCardLoaderJSON;
@@ -18,7 +19,7 @@ public class GameBoard {
     private int currentRound;
     private int currentDraft;
 
-
+    private iCountryActivities activities;
 
 
     ArrayList<ClientData> clientData;
@@ -28,9 +29,13 @@ public class GameBoard {
 
     GameBoardDeck gameBoardDeck;
 
-    public GameBoard(){
+    public GameBoard(String country){
         this.clientData = new ArrayList<ClientData>();
         this.players = new ArrayList<Player>();
+
+        if(country.equals("Australia")){
+            this.activities = new AustraliaActivities();
+        }
 
 
     }
@@ -102,12 +107,14 @@ public class GameBoard {
         while(this.currentRound <= this.TOTAL_ROUNDS) {
             System.out.println("new round");
             newRoundSetup();
+
             this.currentDraft = 1;
+            roundHandler.runDraft(this.players, this.drawDecks, true);
+            this.currentDraft++;
             while(this.currentDraft <= this.ROUND_LENGTH){
                 System.out.println("new draft");
-                roundHandler.run(this.players, this.drawDecks);
+                roundHandler.runDraft(this.players, this.drawDecks, false);
                 this.currentDraft++;
-
             }
             this.currentRound++;
         }
