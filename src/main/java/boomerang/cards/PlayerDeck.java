@@ -11,4 +11,7 @@ public class PlayerDeck extends Deck implements iAddableCardDeck {
         super.cards.add(card);
     }
 
+    public void resetDeck(){
+        super.cards.clear();
+    }
 }

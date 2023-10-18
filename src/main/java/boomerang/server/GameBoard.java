@@ -11,8 +11,8 @@ import java.util.ArrayList;
 
 
 public class GameBoard {
-    private final int TOTAL_ROUNDS = 4;
-    private final int ROUND_LENGTH = 7;
+    private final int TOTAL_ROUNDS = 3;
+    private final int ROUND_LENGTH = 2;
     private final int DRAW_DECK_START_SIZE = 3;
 
     private int currentRound;
@@ -50,15 +50,18 @@ public class GameBoard {
         this.drawDecks = new ArrayList<DrawDeck>();
 
 
-        //setting up decks
+
     }
     private void newRoundSetup(){
 
+        //setting up decks
         AustraliaCardLoaderJSON cardLoader = new AustraliaCardLoaderJSON();
-        gameBoardDeck.setDeck(cardLoader.createCards());
+        this.gameBoardDeck.setDeck(cardLoader.createCards());
+        this.drawDecks.clear();
 
         for(int i=0; i<players.size(); i++){
             this.drawDecks.add(new DrawDeck(i));
+            this.players.get(i).resetPlayerDeck();
         }
 
         GameboardCardMovement gameboardCardMovement = new GameboardCardMovement();
@@ -96,13 +99,17 @@ public class GameBoard {
         initGame();
 
         RoundHandler roundHandler = new RoundHandler(clientData);
-        while(this.TOTAL_ROUNDS <= 4) {
+        while(this.currentRound <= this.TOTAL_ROUNDS) {
+            System.out.println("new round");
             newRoundSetup();
-            roundHandler.run(this.players, this.drawDecks);
-            while(this.currentRound <= this.ROUND_LENGTH){
+            this.currentDraft = 1;
+            while(this.currentDraft <= this.ROUND_LENGTH){
+                System.out.println("new draft");
                 roundHandler.run(this.players, this.drawDecks);
-                //roundHandler.rotateCards(this.drawCards);
+                this.currentDraft++;
+
             }
+            this.currentRound++;
         }
     }
 }

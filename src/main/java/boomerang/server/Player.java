@@ -10,5 +10,7 @@ public class Player {
         this.playerDeck = new PlayerDeck();
     }
     public PlayerDeck getPlayerDeck(){return this.playerDeck;}
+    public void resetPlayerDeck(){this.playerDeck.resetDeck();}
+
     public int getPlayerID(){return this.playerID;}
 }

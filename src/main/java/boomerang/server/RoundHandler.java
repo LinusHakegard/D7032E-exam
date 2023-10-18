@@ -125,6 +125,6 @@ public class RoundHandler {
             System.out.println();
         }
         rotateDrawDeck(drawDecks);
-        System.out.println("Round finished\n");
+        System.out.println("Draft finished\n");
     }
 }

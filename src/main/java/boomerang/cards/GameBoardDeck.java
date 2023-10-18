@@ -12,6 +12,7 @@ public class GameBoardDeck extends Deck{
     }
 
     public void setDeck(ArrayList<Card> cards){
+        super.cards.clear();
         super.cards = cards;
     }
 }
