@@ -76,37 +76,38 @@ public class RoundHandler {
         ArrayList<String> messages = new ArrayList<>();
         ExecutorService threadpool = Executors.newFixedThreadPool(clientData.size());
 
-        executePlayerTasks(threadpool, messages, drawDecks, players);
-        waitUntilAllTasksComplete(threadpool, messages, players, drawDecks);
+        executePlayerTasks(threadpool, messages);
+        waitUntilAllTasksComplete(threadpool);
+        processPlayerMessages(messages, drawDecks, players);
 
         displayPlayerDeckContents(players);
         rotateDrawDeck(drawDecks);
         System.out.println("Draft finished\n");
     }
 
-    public void runActivityPick(ArrayList<Player> players, ArrayList<DrawDeck> drawDecks) {
+   public void runActivityPick(ArrayList<Player> players, ArrayList<String> activities) {
         // notifya dom om vilka boomerang.activities dom kan välja notifyPlayersOfRoundStart(drawDecks);
 
         ArrayList<String> messages = new ArrayList<>();
         ExecutorService threadpool = Executors.newFixedThreadPool(clientData.size());
 
-        executePlayerTasks(threadpool, messages, drawDecks, players);
-        waitUntilAllTasksComplete(threadpool, messages, players, drawDecks);
+        executePlayerTasks(threadpool, messages);
+        waitUntilAllTasksComplete(threadpool);
 
 
         System.out.println("Draft finished\n");
     }
 
-    private void executePlayerTasks(ExecutorService threadpool, ArrayList<String> messages, ArrayList<DrawDeck> drawDecks, ArrayList<Player> players) {
+    private void executePlayerTasks(ExecutorService threadpool, ArrayList<String> messages) {
         for (int p = 0; p < clientData.size(); p++) {
             final int currentPlayerIndex = p;
-            Runnable task = createPlayerTask(currentPlayerIndex, messages, drawDecks, players);
+            Runnable task = createPlayerTask(currentPlayerIndex, messages);
             threadpool.execute(task);
         }
         threadpool.shutdown();
     }
 
-    private Runnable createPlayerTask(int currentPlayerIndex, ArrayList<String> messages, ArrayList<DrawDeck> drawDecks, ArrayList<Player> players) {
+    private Runnable createPlayerTask(int currentPlayerIndex, ArrayList<String> messages) {
         return new Runnable() {
             @Override
             public void run() {
@@ -120,7 +121,7 @@ public class RoundHandler {
         };
     }
 
-    private void waitUntilAllTasksComplete(ExecutorService threadpool, ArrayList<String> messages, ArrayList<Player> players, ArrayList<DrawDeck> drawDecks) {
+    private void waitUntilAllTasksComplete(ExecutorService threadpool) {
         while (!threadpool.isTerminated()) {
             try {
                 Thread.sleep(100);
@@ -129,7 +130,7 @@ public class RoundHandler {
             }
         }
 
-        processPlayerMessages(messages, drawDecks, players);
+
     }
 
     private void processPlayerMessages(ArrayList<String> messages, ArrayList<DrawDeck> drawDecks, ArrayList<Player> players) {
