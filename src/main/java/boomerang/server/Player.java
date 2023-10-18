@@ -55,4 +55,8 @@ public class Player {
         System.out.println("player score = " + this.score);
     }
 
+    public String getMostRecentActivity(){
+        return this.mostRecentActivity;
+    }
+
 }

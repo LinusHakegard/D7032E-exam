@@ -13,7 +13,8 @@ public class AustraliaScoringStrategy implements iScoringStrategy {
         // Add the boomerang.scoring strategies specific to this game mode
         //strategies.add(new ThrowAndCatchStrategy());
         //strategies.add(new CollectionStrategy());
-        strategies.add(new AnimalStrategy());
+        //strategies.add(new AnimalStrategy());
+        strategies.add(new ActivityScoring());
         // Add more strategies if needed
     }
 
