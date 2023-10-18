@@ -24,6 +24,8 @@ public class GameServer {
                 this.gameBoard.addClient(new ClientData(i, connectionSocket, inFromClient, outToClient));
                 this.gameBoard.addPlayer(new Player(i));
 
+                //fixa med message to client sender
+                outToClient.writeObject("You are player: " + i);
                 System.out.println("Player" + i + " joined" + "\n");
 
 

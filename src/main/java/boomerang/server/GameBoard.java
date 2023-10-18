@@ -7,6 +7,7 @@ import boomerang.cards.DrawDeck;
 import boomerang.cards.GameBoardDeck;
 import boomerang.deckhandling.AustraliaCardLoaderJSON;
 import boomerang.deckhandling.GameboardCardMovement;
+import boomerang.scoring.AustraliaScoringStrategy;
 
 import java.util.ArrayList;
 
@@ -14,10 +15,12 @@ import java.util.ArrayList;
 public class GameBoard {
     private final int TOTAL_ROUNDS = 3;
     private final int ROUND_LENGTH = 2;
-    private final int DRAW_DECK_START_SIZE = 3;
+    private final int DRAW_DECK_START_SIZE = 7;
 
     private int currentRound;
     private int currentDraft;
+
+    private String country;
 
     private iCountryActivities activities;
 
@@ -32,10 +35,8 @@ public class GameBoard {
     public GameBoard(String country){
         this.clientData = new ArrayList<ClientData>();
         this.players = new ArrayList<Player>();
+        this.country = country;
 
-        if(country.equals("Australia")){
-            this.activities = new AustraliaActivities();
-        }
 
 
     }
@@ -54,7 +55,13 @@ public class GameBoard {
         this.gameBoardDeck = new GameBoardDeck();
         this.drawDecks = new ArrayList<DrawDeck>();
 
+        if(country.equals("Australia")) {
+            this.activities = new AustraliaActivities();
 
+            for (Player player : players) {
+                player.setCountryScoringStrategy(new AustraliaScoringStrategy());
+            }
+        }
 
     }
     private void newRoundSetup(){
@@ -76,30 +83,13 @@ public class GameBoard {
             }
         }
 
-       /* for (Card card : this.gameBoardDeck.getCards()) {
-            System.out.println("Name: " + card.getName());
-            System.out.println("Number: " + card.getNumber());
-            System.out.println("Site: " + card.getSite());
-            System.out.println("Region: " + card.getRegion());
-            System.out.println("Collection: " + card.getCollection());
-            System.out.println("Animal: " + card.getAnimal());
-            System.out.println("Activity: " + card.getActivity());
-            System.out.println();
-        }
-        System.out.println("player0 cards" );
-        System.out.println("" );
-        for (Card card : drawDecks.get(0).getCards()) {
-            System.out.println("Name: " + card.getName());
-            System.out.println("Number: " + card.getNumber());
-            System.out.println("Site: " + card.getSite());
-            System.out.println("Region: " + card.getRegion());
-            System.out.println("Collection: " + card.getCollection());
-            System.out.println("Animal: " + card.getAnimal());
-            System.out.println("Activity: " + card.getActivity());
-            System.out.println();
-        }*/
-    }
 
+    }
+    private void calculateScores(){
+        for(Player player : this.players){
+            player.calculateScore();
+        }
+    }
     public void runner(){
         initGame();
 
@@ -117,6 +107,7 @@ public class GameBoard {
                 this.currentDraft++;
             }
             roundHandler.runActivityPick(this.players, this.activities.getActivities());
+            calculateScores();
             this.currentRound++;
         }
     }

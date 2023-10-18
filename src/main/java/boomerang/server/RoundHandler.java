@@ -19,12 +19,15 @@ public class RoundHandler {
         this.clientData = clientData;
     }
 
-    public void notifyPlayersOfDraftStart(ArrayList<DrawDeck> drawDecks, boolean firstRound){
+    public void notifyPlayersOfDraftStart(ArrayList<DrawDeck> drawDecks, ArrayList<Player> players, boolean firstRound){
 
         for(ClientData clientData : this.clientData) {
+            String availableCardsData ;
             String availableCards = "";
+            String throwCardData ;
+            String allPlayerDecks;
+
             MessageToClientSender messageToClientSender = new MessageToClientSender();
-            //messageToClientSender.sendMessageToPlayers(clientData.outToClient,) skicka data om korten
 
             DrawDeck drawDeck = null;
             for(DrawDeck curDrawDeck : drawDecks){
@@ -33,9 +36,17 @@ public class RoundHandler {
                 }
             }
 
+            throwCardData = getPlayerThrowCardContents(players.get(clientData.getClientID()));
+            allPlayerDecks = getPlayerDeckContents(players);
+            availableCardsData = getDrawDeckContents(drawDeck);
+
             for(Card card : drawDeck.getCards()){
                 availableCards = availableCards + " *" + card.getSite();
             }
+
+            messageToClientSender.sendMessageToPlayers(clientData.outToClient, throwCardData);
+            messageToClientSender.sendMessageToPlayers(clientData.outToClient, allPlayerDecks);
+            messageToClientSender.sendMessageToPlayers(clientData.outToClient, availableCardsData);
 
             if(firstRound){
                 messageToClientSender.sendMessageToPlayers(clientData.outToClient, "Pick a card to keep as throw card " + availableCards);
@@ -96,7 +107,7 @@ public class RoundHandler {
 
     public void runDraft(ArrayList<Player> players, ArrayList<DrawDeck> drawDecks, boolean firstRound) {
 
-        notifyPlayersOfDraftStart(drawDecks, firstRound);
+        notifyPlayersOfDraftStart(drawDecks, players, firstRound);
 
         ArrayList<String> messages = new ArrayList<>();
         ExecutorService threadpool = Executors.newFixedThreadPool(clientData.size());
@@ -108,7 +119,7 @@ public class RoundHandler {
         System.out.println("Draft finished\n");
     }
 
-   public void runActivityPick(ArrayList<Player> players, ArrayList<String> activities) {
+    public void runActivityPick(ArrayList<Player> players, ArrayList<String> activities) {
         notifyPlayersOfActivityPick(players, activities);
 
         ArrayList<String> messages = new ArrayList<>();
@@ -166,11 +177,14 @@ public class RoundHandler {
             PlayerDeck moveToPlayerDeck = player.getPlayerDeck();
             String site = String.valueOf(message.charAt(0));
 
+            player.setTouristSiteVisited(site);
             drawDeckCardMovement.moveCard(moveFromDrawDeck, moveToPlayerDeck, site);
+
+
         }
     }
 
-    private void processPlayerActivityMessages(ArrayList<String> messages, ArrayList<Player> players) {
+     private void processPlayerActivityMessages(ArrayList<String> messages, ArrayList<Player> players) {
         for (int i = 0; i < messages.size(); i++) {
             String message = messages.get(i);
             System.out.println(message);
@@ -195,17 +209,77 @@ public class RoundHandler {
         return null; // Handle the case where no draw deck is found
     }
 
-    private void displayPlayerDeckContents(ArrayList<Player> players) {
-        for (Card card : players.get(0).getPlayerDeck().getCards()) {
-            System.out.println("Name: " + card.getName());
-            System.out.println("Number: " + card.getNumber());
-            System.out.println("Site: " + card.getSite());
-            System.out.println("Region: " + card.getRegion());
-            System.out.println("Collection: " + card.getCollection());
-            System.out.println("Animal: " + card.getAnimal());
-            System.out.println("Activity: " + card.getActivity());
+    //ska göras direkt i deck klasserna
+    private String getPlayerDeckContents(ArrayList<Player> players) {
+        StringBuilder result = new StringBuilder();
 
+        for (Player player : players) {
+            result.append("Player " + player.getPlayerID() + "'s cards (excluding throw card):").append("\n");
+            ArrayList<Card> playerCards = player.getPlayerDeck().getCards();
 
+            for (int i = 1; i < playerCards.size(); i++) { // Start from index 1 to skip the first card
+                Card card = playerCards.get(i);
+                result.append("Name: ").append(card.getName())
+                        .append(" | Number: ").append(card.getNumber())
+                        .append(" | Site: ").append(card.getSite())
+                        .append(" | Region: ").append(card.getRegion())
+                        .append(" | Collection: ").append(card.getCollection())
+                        .append(" | Animal: ").append(card.getAnimal())
+                        .append(" | Activity: ").append(card.getActivity())
+                        .append("\n");
+            }
+
+            result.append("\n");
         }
+
+        return result.toString();
+    }
+
+    private String getDrawDeckContents(DrawDeck drawDeck) {
+        StringBuilder result = new StringBuilder();
+
+
+        result.append("Available cards: ").append("\n");
+        ArrayList<Card> cards = drawDeck.getCards();
+
+
+        for (int i = 0; i < drawDeck.getCards().size(); i++) {
+            Card card = cards.get(i);
+            result.append("Name: ").append(card.getName())
+                    .append(" | Number: ").append(card.getNumber())
+                    .append(" | Site: ").append(card.getSite())
+                    .append(" | Region: ").append(card.getRegion())
+                    .append(" | Collection: ").append(card.getCollection())
+                    .append(" | Animal: ").append(card.getAnimal())
+                    .append(" | Activity: ").append(card.getActivity())
+                    .append("\n");
+        }
+
+            result.append("\n");
+
+
+        return result.toString();
+    }
+
+    private String getPlayerThrowCardContents(Player player) {
+        StringBuilder result = new StringBuilder();
+        Card card = player.getPlayerDeck().getFirstCard();
+
+        result.append("Your throw card is: ").append("\n");
+        if(card != null) {
+            result.append("Name: ").append(card.getName())
+                    .append(" | Number: ").append(card.getNumber())
+                    .append(" | Site: ").append(card.getSite())
+                    .append(" | Region: ").append(card.getRegion())
+                    .append(" | Collection: ").append(card.getCollection())
+                    .append(" | Animal: ").append(card.getAnimal())
+                    .append(" | Activity: ").append(card.getActivity())
+                    .append("\n");
+
+            result.append("\n");
+        }
+
+
+        return result.toString();
     }
 }

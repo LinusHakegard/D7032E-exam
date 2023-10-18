@@ -2,6 +2,8 @@ package boomerang.server;
 import java.io.ObjectInputStream;
 import java.io.IOException;
 
+
+//GÖRA STATISK SEN
 public class MessageFromClientReceiver {
     private final ObjectInputStream inFromClient;
 
