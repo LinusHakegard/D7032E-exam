@@ -58,8 +58,8 @@
     "name": "Nitmiluk National Park",
     "site": "G",
     "number": 4,
-    "activity": "Platypuses",
-    "animal": null,
+    "activity": null,
+    "animal": "Platypuses",
     "collection": "Shells"
   },
   {
@@ -211,9 +211,9 @@
     "name": "Royal Exhibition Building",
     "site": "X",
     "number": 2,
-    "activity": "Platypuses",
-    "animal": "Leaves",
-    "collection": null
+    "activity": null,
+    "animal": "Platypuses",
+    "collection": "Leaves"
   },
   {
     "region": "Tasmania",
