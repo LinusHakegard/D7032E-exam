@@ -25,7 +25,7 @@ public class GameClient {
                 nextMessage = (String) inFromServer.readObject();
                 System.out.println(nextMessage);
 
-                if(nextMessage.contains("Type") || nextMessage.contains("keep")) {
+                if(nextMessage.contains("Pick") || nextMessage.contains("keep")) {
 
                     Scanner in = new Scanner(System.in);
                     String inputLine = "MESSAGE WILL NOT CONTAIN THIS";

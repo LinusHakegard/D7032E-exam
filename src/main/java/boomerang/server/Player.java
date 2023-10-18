@@ -18,4 +18,12 @@ public class Player {
     public void resetPlayerDeck(){this.playerDeck.resetDeck();}
 
     public int getPlayerID(){return this.playerID;}
+
+    public ArrayList<String> getUsedActivities(){
+        return this.usedActivities;
+    }
+
+    public void addUsedActivity(String activity){
+        this.usedActivities.add(activity);
+    }
 }

@@ -15,4 +15,8 @@ public class ClientData {
         this.inFromClient = inFromClient;
         this.outToClient = outToClient;
     }
+
+    public int getClientID(){
+        return this.clientID;
+    }
 }

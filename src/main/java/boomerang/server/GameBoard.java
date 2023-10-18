@@ -116,6 +116,7 @@ public class GameBoard {
                 roundHandler.runDraft(this.players, this.drawDecks, false);
                 this.currentDraft++;
             }
+            roundHandler.runActivityPick(this.players, this.activities.getActivities());
             this.currentRound++;
         }
     }

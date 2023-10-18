@@ -6,6 +6,7 @@ import boomerang.cards.PlayerDeck;
 import boomerang.deckhandling.DrawDeckCardMovement;
 
 import java.io.ObjectInputStream;
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class RoundHandler {
         this.clientData = clientData;
     }
 
-    public void notifyPlayersOfRoundStart(ArrayList<DrawDeck> drawDecks, boolean firstRound){
+    public void notifyPlayersOfDraftStart(ArrayList<DrawDeck> drawDecks, boolean firstRound){
 
         for(ClientData clientData : this.clientData) {
             String availableCards = "";
@@ -43,6 +44,30 @@ public class RoundHandler {
                 messageToClientSender.sendMessageToPlayers(clientData.outToClient, "Pick a card to keep " + availableCards);
 
             }
+        }
+    }
+    public void notifyPlayersOfActivityPick(ArrayList<Player> players, ArrayList<String> activities){
+        for(ClientData clientData : this.clientData) {
+            String availableActivities = "";
+            MessageToClientSender messageToClientSender = new MessageToClientSender();
+
+            Player player = players.get(clientData.getClientID());
+
+            ArrayList<String> result = new ArrayList<>();
+
+            ArrayList<String> playerUsedActivities = player.getUsedActivities();
+            for (String element : activities) {
+                if (!playerUsedActivities.contains(element)) {
+                    result.add(element);
+                }
+            }
+
+            for(String activity : result){
+                availableActivities = availableActivities + " *" + activity;
+            }
+
+            messageToClientSender.sendMessageToPlayers(clientData.outToClient, "Pick an activity " + availableActivities);
+
         }
     }
     public void rotateDrawDeck(ArrayList<DrawDeck> drawDecks){
@@ -71,31 +96,29 @@ public class RoundHandler {
 
     public void runDraft(ArrayList<Player> players, ArrayList<DrawDeck> drawDecks, boolean firstRound) {
 
-        notifyPlayersOfRoundStart(drawDecks, firstRound);
+        notifyPlayersOfDraftStart(drawDecks, firstRound);
 
         ArrayList<String> messages = new ArrayList<>();
         ExecutorService threadpool = Executors.newFixedThreadPool(clientData.size());
 
         executePlayerTasks(threadpool, messages);
         waitUntilAllTasksComplete(threadpool);
-        processPlayerMessages(messages, drawDecks, players);
-
-        displayPlayerDeckContents(players);
+        processPlayerDrawMessages(messages, drawDecks, players);
         rotateDrawDeck(drawDecks);
         System.out.println("Draft finished\n");
     }
 
    public void runActivityPick(ArrayList<Player> players, ArrayList<String> activities) {
-        // notifya dom om vilka boomerang.activities dom kan välja notifyPlayersOfRoundStart(drawDecks);
+        notifyPlayersOfActivityPick(players, activities);
 
         ArrayList<String> messages = new ArrayList<>();
         ExecutorService threadpool = Executors.newFixedThreadPool(clientData.size());
 
         executePlayerTasks(threadpool, messages);
         waitUntilAllTasksComplete(threadpool);
+        processPlayerActivityMessages(messages, players);
 
-
-        System.out.println("Draft finished\n");
+        System.out.println("Activities picks finished\n");
     }
 
     private void executePlayerTasks(ExecutorService threadpool, ArrayList<String> messages) {
@@ -129,20 +152,32 @@ public class RoundHandler {
                 throw new RuntimeException(e);
             }
         }
-
-
     }
 
-    private void processPlayerMessages(ArrayList<String> messages, ArrayList<DrawDeck> drawDecks, ArrayList<Player> players) {
+    private void processPlayerDrawMessages(ArrayList<String> messages, ArrayList<DrawDeck> drawDecks, ArrayList<Player> players) {
         for (int i = 0; i < messages.size(); i++) {
             String message = messages.get(i);
+            System.out.println(message);
+
             DrawDeck moveFromDrawDeck = findDrawDeckForMessage(drawDecks, message);
 
             DrawDeckCardMovement drawDeckCardMovement = new DrawDeckCardMovement();
-            PlayerDeck moveToPlayerDeck = players.get(Character.getNumericValue(message.charAt(1))).getPlayerDeck();
+            Player player = players.get(Character.getNumericValue(message.charAt(1)));
+            PlayerDeck moveToPlayerDeck = player.getPlayerDeck();
             String site = String.valueOf(message.charAt(0));
 
             drawDeckCardMovement.moveCard(moveFromDrawDeck, moveToPlayerDeck, site);
+        }
+    }
+
+    private void processPlayerActivityMessages(ArrayList<String> messages, ArrayList<Player> players) {
+        for (int i = 0; i < messages.size(); i++) {
+            String message = messages.get(i);
+            System.out.println(message);
+            Player player = players.get(Character.getNumericValue(message.charAt(message.length() - 1)));
+            player.addUsedActivity(message.substring(0, message.length() - 1));
+
+            System.out.println(player.getUsedActivities());
         }
     }
 
@@ -166,7 +201,8 @@ public class RoundHandler {
             System.out.println("Collection: " + card.getCollection());
             System.out.println("Animal: " + card.getAnimal());
             System.out.println("Activity: " + card.getActivity());
-            System.out.println();
+
+
         }
     }
 }
