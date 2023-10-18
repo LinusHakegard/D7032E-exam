@@ -9,6 +9,7 @@ public class Player {
     PlayerDeck playerDeck;
 
     ArrayList<String> usedActivities;
+    String mostRecentActivity;
     public Player(int playerID){
         this.playerID = playerID;
         this.playerDeck = new PlayerDeck();
@@ -25,5 +26,8 @@ public class Player {
 
     public void addUsedActivity(String activity){
         this.usedActivities.add(activity);
+    }
+    public void setMostRecentActivity(String activity){
+        this.mostRecentActivity = activity;
     }
 }

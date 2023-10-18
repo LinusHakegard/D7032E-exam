@@ -175,7 +175,10 @@ public class RoundHandler {
             String message = messages.get(i);
             System.out.println(message);
             Player player = players.get(Character.getNumericValue(message.charAt(message.length() - 1)));
-            player.addUsedActivity(message.substring(0, message.length() - 1));
+            if(!message.substring(0, message.length() - 1).equals("No activity")){
+                player.addUsedActivity(message.substring(0, message.length() - 1));
+            }
+            player.setMostRecentActivity(message.substring(0, message.length() - 1));
 
             System.out.println(player.getUsedActivities());
         }
