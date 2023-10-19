@@ -1,92 +1,103 @@
 package boomerang.server.gameboard;
 
-import boomerang.server.cards.DrawDeck;
-import boomerang.server.cards.PlayerDeck;
-import boomerang.server.scoring.iScoringStrategy;
+import boomerang.server.gameboard.cards.DrawDeck;
+import boomerang.server.gameboard.cards.PlayerDeck;
+import boomerang.server.gameboard.scoring.iScoringStrategy;
 
 import java.util.ArrayList;
 
 public class Player {
-    int playerID;
-    PlayerDeck playerDeck;
+    private final int playerID;
+    private int score;
+    private int totalThrowCatchScore;
+    private String mostRecentActivity;
+    private PlayerDeck playerDeck;
+    private DrawDeck drawDeck;
+    private iScoringStrategy countryScoringStrategy;
+    private ArrayList<String> usedActivities;
+    private ArrayList<String> touristSitesVisited;
 
-    DrawDeck drawDeck;
-
-    int score;
-    int totalThrowCatchScore;
-    iScoringStrategy countryScoringStrategy;
-
-    ArrayList<String> usedActivities;
-    ArrayList<String> touristSitesVisited;
-    String mostRecentActivity;
-    public Player(int playerID){
+    public Player(int playerID) {
         this.playerID = playerID;
+        this.score = 0;
+        this.totalThrowCatchScore = 0;
         this.playerDeck = new PlayerDeck();
         this.usedActivities = new ArrayList<>();
         this.touristSitesVisited = new ArrayList<>();
-
-        this.score = 0;
-        this.totalThrowCatchScore = 0;
-
-    }
-    public PlayerDeck getPlayerDeck(){return this.playerDeck;}
-    public void resetPlayerDeck(){this.playerDeck.resetDeck();}
-
-    public int getPlayerID(){return this.playerID;}
-
-    public ArrayList<String> getUsedActivities(){
-        return this.usedActivities;
     }
 
-    public void addUsedActivity(String activity){
-        this.usedActivities.add(activity);
-    }
-    public void setMostRecentActivity(String activity){
-        this.mostRecentActivity = activity;
+    // Accessor methods
+    public int getPlayerID() {
+        return playerID;
     }
 
-    public void setTouristSiteVisited(String site){
-        if(!touristSitesVisited.contains(site)){
-            this.touristSitesVisited.add(site);
-        }
-
+    public int getScore() {
+        return score;
     }
 
-    public void setCountryScoringStrategy(iScoringStrategy countryScoringStrategy){
-        this.countryScoringStrategy = countryScoringStrategy;
-    }
-    public void calculateScore(){
-        this.score += this.countryScoringStrategy.calculateScore(this);
-        System.out.println("player score = " + this.score);
+    public int getPlayerThrowAndCatchScore() {
+        return totalThrowCatchScore;
     }
 
-    public String getMostRecentActivity(){
-        return this.mostRecentActivity;
+    public PlayerDeck getPlayerDeck() {
+        return playerDeck;
     }
 
-    public ArrayList<String> getTouristSitesVisited(){
-        return this.touristSitesVisited;
+    public DrawDeck getDrawDeck() {
+        return drawDeck;
     }
 
-    public void addToPlayerScore(int score){
-        this.score += score;
-    }
-    public void addToPlayerThrowAndCatchScore(int score){
-        this.totalThrowCatchScore += score;
+    public String getMostRecentActivity() {
+        return mostRecentActivity;
     }
 
-    public int getScore(){
-        return this.score;
-    }
-    public int getPlayerThrowAndCatchScore(){
-        return this.totalThrowCatchScore;
+    public ArrayList<String> getUsedActivities() {
+        return usedActivities;
     }
 
-    public void setDrawDeck(DrawDeck drawDeck){
+    public ArrayList<String> getTouristSitesVisited() {
+        return touristSitesVisited;
+    }
+
+    // Mutator methods
+    public void setDrawDeck(DrawDeck drawDeck) {
         this.drawDeck = drawDeck;
     }
 
-    public DrawDeck getDrawDeck(){
-        return this.drawDeck;
+    public void setCountryScoringStrategy(iScoringStrategy countryScoringStrategy) {
+        this.countryScoringStrategy = countryScoringStrategy;
+    }
+
+    public void setMostRecentActivity(String activity) {
+        this.mostRecentActivity = activity;
+    }
+
+    public void addToPlayerScore(int score) {
+        this.score += score;
+    }
+
+    public void addToPlayerThrowAndCatchScore(int score) {
+        this.totalThrowCatchScore += score;
+    }
+
+    public void setTouristSiteVisited(String site) {
+        if (!touristSitesVisited.contains(site)) {
+            touristSitesVisited.add(site);
+        }
+    }
+
+    public void calculateScore() {
+        if (countryScoringStrategy != null) {
+            this.score += countryScoringStrategy.calculateScore(this);
+            System.out.println("Player score = " + this.score);
+        }
+    }
+
+    public void resetPlayerDeck() {
+        playerDeck.resetDeck();
+    }
+
+    public void addUsedActivity(String activity) {
+        usedActivities.add(activity);
     }
 }

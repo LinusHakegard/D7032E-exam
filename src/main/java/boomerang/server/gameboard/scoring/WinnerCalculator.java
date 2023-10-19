@@ -1,4 +1,4 @@
-package boomerang.server.scoring;
+package boomerang.server.gameboard.scoring;
 
 import boomerang.server.gameboard.Player;
 
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+//used to determine a winner
 public class WinnerCalculator {
     public static Player calculateWinner(ArrayList<Player> players) {
         // Sort players based on score and totalThrowCatchScore using a custom comparator.

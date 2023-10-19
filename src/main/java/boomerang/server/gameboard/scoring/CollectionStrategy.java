@@ -1,11 +1,11 @@
-package boomerang.server.scoring;
+package boomerang.server.gameboard.scoring;
 
-import boomerang.server.cards.Card;
-import boomerang.server.cards.PlayerDeck;
+import boomerang.server.gameboard.cards.Card;
+import boomerang.server.gameboard.cards.PlayerDeck;
 import boomerang.server.gameboard.Player;
 import java.util.Hashtable;
 
-
+//used for calculating scores based on collections
 public class CollectionStrategy implements iScoringStrategy {
     Hashtable<String, Integer> wordToIntegerMap;
 

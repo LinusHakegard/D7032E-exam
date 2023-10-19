@@ -1,22 +1,21 @@
-package boomerang.server.australia;
+package boomerang.server.gameboard.australia;
 
 import boomerang.server.gameboard.Player;
-import boomerang.server.scoring.*;
+import boomerang.server.gameboard.scoring.*;
 
 import java.util.ArrayList;
 
 public class AustraliaScoringStrategy implements iScoringStrategy {
-    private ArrayList<iScoringStrategy> strategies;
+    private final ArrayList<iScoringStrategy> strategies;
 
+    //adding the desired scoring for the australia game version
     public AustraliaScoringStrategy() {
         strategies = new ArrayList<>();
 
-        // Add the boomerang.server.scoring strategies specific to this game mode
         strategies.add(new ThrowAndCatchStrategy());
         strategies.add(new CollectionStrategy());
         strategies.add(new AnimalStrategy());
         strategies.add(new ActivityStrategy());
-        // Add more strategies if needed
     }
 
     @Override

@@ -1,14 +1,13 @@
 package boomerang.server.gameboard;
 
-import boomerang.server.australia.AustraliaActivities;
-import boomerang.server.cards.DrawDeck;
-import boomerang.server.cards.GameBoardDeck;
-import boomerang.server.australia.AustraliaCardLoaderJSON;
-import boomerang.server.deckhandling.GameboardCardMovement;
-import boomerang.server.australia.AustraliaScoringStrategy;
-import boomerang.server.scoring.MapScores;
-import boomerang.server.scoring.WinnerCalculator;
-
+import boomerang.server.gameboard.australia.AustraliaActivities;
+import boomerang.server.gameboard.cards.DrawDeck;
+import boomerang.server.gameboard.cards.GameBoardDeck;
+import boomerang.server.gameboard.australia.AustraliaCardLoaderJSON;
+import boomerang.server.gameboard.deckhandling.GameboardCardMovement;
+import boomerang.server.gameboard.australia.AustraliaScoringStrategy;
+import boomerang.server.gameboard.scoring.MapScores;
+import boomerang.server.gameboard.scoring.WinnerCalculator;
 
 import java.util.ArrayList;
 
@@ -28,7 +27,7 @@ public class GameBoard {
     private iCountryActivities activities;
 
 
-    private ArrayList<ClientData> clientData;
+    private final ArrayList<ClientData> clientData;
 
     private ArrayList<DrawDeck> drawDecks;
     private ArrayList<Player> players;
@@ -39,10 +38,8 @@ public class GameBoard {
         this.clientData = new ArrayList<ClientData>();
         this.players = new ArrayList<Player>();
         this.country = country;
-
-
-
     }
+
     public void addClient(ClientData clientData){
         this.clientData.add(clientData);
     }
@@ -50,9 +47,8 @@ public class GameBoard {
         this.players.add(player);
     }
 
-
+    //setting up game
     private void initGame() {
-        //setting up states
         this.currentRound = 1;
         this.currentDraft = 1;
         this.gameBoardDeck = new GameBoardDeck();
@@ -90,6 +86,8 @@ public class GameBoard {
 
 
     }
+
+    //calculates scores
     private void calculateScores(boolean finalRound){
         mapScores.calculatePlayerMapBonuses(this.players);
         if(finalRound){
@@ -98,8 +96,9 @@ public class GameBoard {
         for(Player player : this.players){
             player.calculateScore();
         }
-
     }
+
+    //tells MessageToClientSender to print the scores to the players
     public void announceScores(){
         for(Player player : players){
             String message = "Player " + player.getPlayerID() + " score: " + player.getScore();
@@ -109,6 +108,7 @@ public class GameBoard {
         }
     }
 
+    //tells MessageToClientSender to print the winner to the players
     public void announceWinner() {
         Player winner = WinnerCalculator.calculateWinner(this.players);
 
@@ -133,6 +133,7 @@ public class GameBoard {
         announceWinner();
     }
 
+    //runs a single round
     private void runSingleRound() {
         newRoundSetup();
         boolean finalRound = (currentRound == this.TOTAL_ROUNDS);
@@ -143,6 +144,7 @@ public class GameBoard {
         announceScores();
     }
 
+    //runs the drafts
     private void runDraftRounds() {
         this.currentDraft = 1;
 
@@ -159,6 +161,7 @@ public class GameBoard {
         }
     }
 
+    //runs the activity pick
     private void runActivityPickRound() {
         RoundHandler.runActivityPick(this.clientData, this.players, this.activities.getActivities());
     }

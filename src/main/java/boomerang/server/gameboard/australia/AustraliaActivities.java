@@ -1,4 +1,4 @@
-package boomerang.server.australia;
+package boomerang.server.gameboard.australia;
 
 import boomerang.server.gameboard.iCountryActivities;
 

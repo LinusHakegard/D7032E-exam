@@ -1,4 +1,4 @@
-package boomerang.server.scoring;
+package boomerang.server.gameboard.scoring;
 
 import boomerang.server.gameboard.Player;
 
@@ -7,6 +7,7 @@ import java.util.Hashtable;
 import java.util.HashSet;
 import java.util.Set;
 
+//used for calculating scores based on the map sites
 public class MapScores {
     private Hashtable<String, Integer> touristSiteBonuses = new Hashtable<>();
     private Set<String> regionsToRemove = new HashSet<>();
@@ -20,9 +21,9 @@ public class MapScores {
         touristSiteBonuses.put("QRST", 3);
         touristSiteBonuses.put("UVWX", 3);
         touristSiteBonuses.put("YZ*-", 3);
-        // Add more regions and bonuses as needed.
     }
 
+    //calculates to bonuses for all players
     public void calculatePlayerMapBonuses(ArrayList<Player> players) {
         for (Player player : players) {
             ArrayList<String> playerVisitedLocations = player.getTouristSitesVisited();
@@ -56,6 +57,7 @@ public class MapScores {
         }
     }
 
+    //calculates the points for vising sites for all players
     public void calculatePlayerVisitScore(ArrayList<Player> players) {
 
         for(Player player : players){

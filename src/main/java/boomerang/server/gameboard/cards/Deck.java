@@ -1,7 +1,8 @@
-package boomerang.server.cards;
+package boomerang.server.gameboard.cards;
 
 import java.util.ArrayList;
-//göra abstakt och lägga till metoder
+
+//base deck class
 public class  Deck {
     protected ArrayList<Card> cards = new ArrayList<Card>();
 

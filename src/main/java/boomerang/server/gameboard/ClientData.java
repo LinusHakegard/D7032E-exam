@@ -3,6 +3,7 @@ package boomerang.server.gameboard;
 import java.io.*;
 import java.net.*;
 
+//keeps track of the networking for a player
 public class ClientData {
     private final int clientID;
     private final ObjectInputStream inFromClient;
@@ -18,6 +19,5 @@ public class ClientData {
         return this.clientID;
     }
     public ObjectOutputStream getOutToClient(){return this.outToClient;}
-
     public ObjectInputStream getInFromClient(){return this.inFromClient;}
 }

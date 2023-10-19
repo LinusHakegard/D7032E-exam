@@ -1,14 +1,15 @@
-package boomerang.server.cards;
+package boomerang.server.gameboard.cards;
 
 public class Card {
-    private String name;
-    private int number;
-    private String site;
-    private String region;
-    private String collection;
-    private String animal;
-    private String activity;
+    private final String name;
+    private final int number;
+    private final String site;
+    private final String region;
+    private final String collection;
+    private final String animal;
+    private final String activity;
 
+    //sets variables according to builder
     private Card(Builder builder) {
         this.name = builder.name;
         this.number = builder.number;
@@ -19,6 +20,7 @@ public class Card {
         this.activity = builder.activity;
     }
 
+    //card builder
     public static class Builder {
         private String name;
         private int number;
@@ -68,6 +70,7 @@ public class Card {
         }
     }
 
+    //getters
     public String getName() {
         return name;
     }

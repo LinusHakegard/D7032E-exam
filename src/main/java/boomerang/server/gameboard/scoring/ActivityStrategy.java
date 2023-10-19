@@ -1,12 +1,13 @@
-package boomerang.server.scoring;
+package boomerang.server.gameboard.scoring;
 
-import boomerang.server.cards.Card;
+import boomerang.server.gameboard.cards.Card;
 import boomerang.server.gameboard.Player;
 
 import java.util.Hashtable;
 
 import static java.lang.Math.abs;
 
+//used for calculating scores based on activities
 public class ActivityStrategy implements iScoringStrategy{
     Hashtable<Integer, Integer> amountToScoreMap;
     public ActivityStrategy(){
@@ -19,6 +20,7 @@ public class ActivityStrategy implements iScoringStrategy{
         amountToScoreMap.put(5, 10);
         amountToScoreMap.put(6, 15);
     }
+
     @Override
     public int calculateScore(Player player) {
         int score = 0;

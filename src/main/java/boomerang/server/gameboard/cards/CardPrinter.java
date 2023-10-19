@@ -1,4 +1,4 @@
-package boomerang.server.cards;
+package boomerang.server.gameboard.cards;
 
 import boomerang.server.gameboard.Player;
 
@@ -15,6 +15,7 @@ public class CardPrinter {
                 + " | Activity: " + card.getActivity();
     }
 
+    //prints all the players decks
     public static String getPlayerDeckContents(ArrayList<Player> players) {
         StringBuilder result = new StringBuilder();
 
@@ -33,6 +34,7 @@ public class CardPrinter {
         return result.toString();
     }
 
+    //prints the cards you can choose from
     public static String getDrawDeckContents(DrawDeck drawDeck) {
         StringBuilder result = new StringBuilder();
 
@@ -49,6 +51,7 @@ public class CardPrinter {
         return result.toString();
     }
 
+    //prints your throw card
     public static String getPlayerThrowCardContents(Player player) {
         StringBuilder result = new StringBuilder();
         Card card = player.getPlayerDeck().getFirstCard();

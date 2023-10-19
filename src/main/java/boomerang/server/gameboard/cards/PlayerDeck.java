@@ -1,7 +1,8 @@
-package boomerang.server.cards;
+package boomerang.server.gameboard.cards;
 
 import java.util.ArrayList;
 
+//deck class for the cards that the player has chosen
 public class PlayerDeck extends Deck implements iAddableCardDeck {
     public ArrayList<Card> getCards() {
         return super.cards;

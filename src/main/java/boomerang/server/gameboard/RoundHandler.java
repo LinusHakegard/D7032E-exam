@@ -1,14 +1,10 @@
 package boomerang.server.gameboard;
 
-import boomerang.server.cards.Card;
-import boomerang.server.cards.CardPrinter;
-import boomerang.server.cards.DrawDeck;
-import boomerang.server.cards.PlayerDeck;
-import boomerang.server.deckhandling.DrawDeckCardMovement;
-import boomerang.server.gameboard.ClientData;
-import boomerang.server.gameboard.MessageFromClientReceiver;
-import boomerang.server.gameboard.MessageToClientSender;
-import boomerang.server.gameboard.Player;
+import boomerang.server.gameboard.cards.Card;
+import boomerang.server.gameboard.cards.CardPrinter;
+import boomerang.server.gameboard.cards.DrawDeck;
+import boomerang.server.gameboard.cards.PlayerDeck;
+import boomerang.server.gameboard.deckhandling.DrawDeckCardMovement;
 
 import java.io.ObjectInputStream;
 import java.util.concurrent.ExecutorService;
@@ -20,6 +16,7 @@ public class RoundHandler {
         // Private constructor to prevent instantiation.
     }
 
+    //tells MessageToClientSender what to send to players when draft starts
     public static void notifyPlayersOfDraftStart(ArrayList<ClientData> clientData, ArrayList<Player> players) {
         for (ClientData client : clientData) {
             String availableCardsData;
@@ -48,6 +45,7 @@ public class RoundHandler {
         }
     }
 
+    //tells MessageToClientSender what to send to players when activity pick starts
     public static void notifyPlayersOfActivityPick(ArrayList<ClientData> clientData, ArrayList<Player> players, ArrayList<String> activities) {
         for (ClientData client : clientData) {
             String availableActivities = "";
@@ -70,6 +68,7 @@ public class RoundHandler {
         }
     }
 
+    //rotates all the players DrawDecks
     public static void rotateDrawDeck(ArrayList<Player> players, boolean lastRotation) {
         int numPlayers = players.size();
 
@@ -96,6 +95,7 @@ public class RoundHandler {
         }
     }
 
+    //runs the draft
     public static void runDraft(ArrayList<ClientData> clientData, ArrayList<Player> players, boolean isLastDraft) {
         notifyPlayersOfDraftStart(clientData, players);
         ArrayList<String> messages = new ArrayList<>();
@@ -108,6 +108,7 @@ public class RoundHandler {
         System.out.println("Draft finished\n");
     }
 
+    //runs the activity pick
     public static void runActivityPick(ArrayList<ClientData> clientData, ArrayList<Player> players, ArrayList<String> activities) {
         notifyPlayersOfActivityPick(clientData, players, activities);
         ArrayList<String> messages = new ArrayList<>();
@@ -119,6 +120,7 @@ public class RoundHandler {
         System.out.println("Activity picks finished\n");
     }
 
+    //creates the threads
     private static void executePlayerTasks(ArrayList<ClientData> clientData, ExecutorService threadpool, ArrayList<String> messages) {
         for (int p = 0; p < clientData.size(); p++) {
             final int currentPlayerIndex = p;
@@ -128,6 +130,7 @@ public class RoundHandler {
         threadpool.shutdown();
     }
 
+    //threads that waits for user input
     private static Runnable createPlayerTask(ClientData client, ArrayList<String> messages) {
         return new Runnable() {
             @Override
@@ -140,6 +143,7 @@ public class RoundHandler {
         };
     }
 
+    //busy wait until all threads are finished
     private static void waitUntilAllTasksComplete(ExecutorService threadpool) {
         while (!threadpool.isTerminated()) {
             try {
@@ -150,6 +154,7 @@ public class RoundHandler {
         }
     }
 
+    //modifies the player decks based on input from threads
     private static void processPlayerDrawMessages(ArrayList<String> messages, ArrayList<Player> players) {
         for (int i = 0; i < messages.size(); i++) {
             String message = messages.get(i);
@@ -163,6 +168,7 @@ public class RoundHandler {
         }
     }
 
+    //modifies the player most recent activity based on input from threads
     private static void processPlayerActivityMessages(ArrayList<String> messages, ArrayList<Player> players) {
         for (int i = 0; i < messages.size(); i++) {
             String message = messages.get(i);

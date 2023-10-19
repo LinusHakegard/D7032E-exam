@@ -1,7 +1,7 @@
-package boomerang.server.australia;
+package boomerang.server.gameboard.australia;
 
-import boomerang.server.cards.Card;
-import boomerang.server.deckhandling.iDeckLoader;
+import boomerang.server.gameboard.cards.Card;
+import boomerang.server.gameboard.deckhandling.iDeckLoader;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -11,7 +11,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
 public class AustraliaCardLoaderJSON implements iDeckLoader {
+    //returns arraylist of the cards specified in the json file
     public ArrayList<Card> createCards(){
         ArrayList<Card> cards = new ArrayList<>();
         String jsonFilePath = "src/main/resources/AustraliaCards.json";
