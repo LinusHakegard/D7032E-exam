@@ -74,6 +74,7 @@ public class GameBoard {
         //setting up decks
         AustraliaCardLoaderJSON cardLoader = new AustraliaCardLoaderJSON();
         this.gameBoardDeck.setDeck(cardLoader.createCards());
+        this.gameBoardDeck.shuffleDeck();
         this.drawDecks.clear();
 
         for(int i=0; i<players.size(); i++){

@@ -1,6 +1,7 @@
 package boomerang.cards;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class GameBoardDeck extends Deck{
 
@@ -14,5 +15,9 @@ public class GameBoardDeck extends Deck{
     public void setDeck(ArrayList<Card> cards){
         super.cards.clear();
         super.cards = cards;
+    }
+
+    public void shuffleDeck(){
+        Collections.shuffle(super.cards);
     }
 }

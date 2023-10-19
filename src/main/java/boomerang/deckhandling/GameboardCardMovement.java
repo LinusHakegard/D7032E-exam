@@ -7,4 +7,6 @@ public class GameboardCardMovement{
         moveToDeck.drawCard(gameBoardDeck.getFirstCard());
         gameBoardDeck.removeFirstCard();
     }
+
+
 }
