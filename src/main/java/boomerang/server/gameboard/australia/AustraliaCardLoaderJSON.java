@@ -11,7 +11,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
 public class AustraliaCardLoaderJSON implements iDeckLoader {
     //returns arraylist of the cards specified in the json file
     public ArrayList<Card> createCards(){

@@ -8,7 +8,7 @@ import java.io.*;
 import java.net.*;
 
 public class GameServer {
-    private final int numberPlayers;
+    private int numberPlayers;
     private GameBoard gameBoard;
     public GameServer(int numberPlayers, String country){
         this.numberPlayers = numberPlayers;

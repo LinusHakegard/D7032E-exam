@@ -1,13 +1,13 @@
 package boomerang.server.gameboard.cards;
 
 public class Card {
-    private final String name;
-    private final int number;
-    private final String site;
-    private final String region;
-    private final String collection;
-    private final String animal;
-    private final String activity;
+    private String name;
+    private int number;
+    private String site;
+    private String region;
+    private String collection;
+    private String animal;
+    private String activity;
 
     //sets variables according to builder
     private Card(Builder builder) {

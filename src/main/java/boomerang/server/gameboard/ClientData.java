@@ -5,9 +5,9 @@ import java.net.*;
 
 //keeps track of the networking for a player
 public class ClientData {
-    private final int clientID;
-    private final ObjectInputStream inFromClient;
-    private final ObjectOutputStream outToClient;
+    private int clientID;
+    private ObjectInputStream inFromClient;
+    private ObjectOutputStream outToClient;
 
     public ClientData(int clientID, ObjectInputStream inFromClient, ObjectOutputStream outToClient){
         this.clientID = clientID;

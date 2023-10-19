@@ -7,7 +7,7 @@ import boomerang.server.gameboard.scoring.iScoringStrategy;
 import java.util.ArrayList;
 
 public class Player {
-    private final int playerID;
+    private int playerID;
     private int score;
     private int totalThrowCatchScore;
     private String mostRecentActivity;

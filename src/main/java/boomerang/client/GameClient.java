@@ -5,7 +5,7 @@ import java.net.*;
 import java.util.Scanner;
 
 public class GameClient {
-    private final String serverIP;
+    private String serverIP;
 
     public GameClient(String serverIP){
         this.serverIP = serverIP;
