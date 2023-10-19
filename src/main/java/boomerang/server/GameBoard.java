@@ -30,12 +30,12 @@ public class GameBoard {
     private iCountryActivities activities;
 
 
-    ArrayList<ClientData> clientData;
+    private ArrayList<ClientData> clientData;
 
-    ArrayList<DrawDeck> drawDecks;
-    ArrayList<Player> players;
+    private ArrayList<DrawDeck> drawDecks;
+    private ArrayList<Player> players;
 
-    GameBoardDeck gameBoardDeck;
+    private GameBoardDeck gameBoardDeck;
 
     public GameBoard(String country){
         this.clientData = new ArrayList<ClientData>();
@@ -79,14 +79,14 @@ public class GameBoard {
         this.drawDecks.clear();
 
         for(int i=0; i<players.size(); i++){
-            this.drawDecks.add(new DrawDeck(i));
+            this.players.get(i).setDrawDeck(new DrawDeck());
             this.players.get(i).resetPlayerDeck();
         }
 
         GameboardCardMovement gameboardCardMovement = new GameboardCardMovement();
-        for(DrawDeck drawDeck : this.drawDecks){
+        for(Player player : players){
             for(int i=0; i < DRAW_DECK_START_SIZE; i++){
-                gameboardCardMovement.moveCard(this.gameBoardDeck, drawDeck);
+                gameboardCardMovement.moveCard(this.gameBoardDeck, player.getDrawDeck());
             }
         }
 
@@ -121,6 +121,8 @@ public class GameBoard {
             MessageToClientSender.sendMessageToPlayer(clientData.get(player.getPlayerID()).getOutToClient(), message);
         }
     }
+
+    //This keeps the game running
     public void runner() {
         initGame();
 
@@ -148,7 +150,7 @@ public class GameBoard {
 
         while (this.currentDraft <= this.ROUND_LENGTH) {
             System.out.println("new draft");
-            RoundHandler.runDraft(this.clientData, this.players, this.drawDecks, !finalRound);
+            RoundHandler.runDraft(this.clientData, this.players, !finalRound);
             this.currentDraft++;
         }
     }

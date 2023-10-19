@@ -16,21 +16,17 @@ public class RoundHandler {
         // Private constructor to prevent instantiation.
     }
 
-    public static void notifyPlayersOfDraftStart(ArrayList<ClientData> clientData, ArrayList<DrawDeck> drawDecks, ArrayList<Player> players, boolean firstRound) {
+    public static void notifyPlayersOfDraftStart(ArrayList<ClientData> clientData, ArrayList<Player> players, boolean firstRound) {
         for (ClientData client : clientData) {
             String availableCardsData;
             String availableCards = "";
             String throwCardData;
             String allPlayerDecks;
 
-            DrawDeck drawDeck = null;
-            for (DrawDeck curDrawDeck : drawDecks) {
-                if (curDrawDeck.getPlayerID() == client.getClientID()) {
-                    drawDeck = curDrawDeck;
-                }
-            }
+            Player player = players.get(client.getClientID());
+            DrawDeck drawDeck = player.getDrawDeck();
 
-            throwCardData = CardPrinter.getPlayerThrowCardContents(players.get(client.getClientID()));
+            throwCardData = CardPrinter.getPlayerThrowCardContents(player);
             allPlayerDecks = CardPrinter.getPlayerDeckContents(players);
             availableCardsData = CardPrinter.getDrawDeckContents(drawDeck);
 
@@ -43,7 +39,7 @@ public class RoundHandler {
             MessageToClientSender.sendMessageToPlayer(client.getOutToClient(), availableCardsData);
 
             String message = firstRound
-                    ? "Pick a card to keep as throw card " + availableCards
+                    ? "Pick a card to keep as a throw card " + availableCards
                     : "Pick a card to keep " + availableCards;
 
             MessageToClientSender.sendMessageToPlayer(client.getOutToClient(), message);
@@ -72,33 +68,33 @@ public class RoundHandler {
         }
     }
 
-    public static void rotateDrawDeck(ArrayList<DrawDeck> drawDecks) {
-        int highestPlayerID = -1;
+    public static void rotateDrawDeck(ArrayList<Player> players) {
+        int numPlayers = players.size();
 
-        for (DrawDeck drawDeck : drawDecks) {
-            if (drawDeck.getPlayerID() > highestPlayerID) {
-                highestPlayerID = drawDeck.getPlayerID();
-            }
+        // Create a temporary array to store the draw decks
+        DrawDeck[] tempDrawDecks = new DrawDeck[numPlayers];
+
+        // Copy the draw decks to the temporary array in a rotated order
+        for (int i = 0; i < numPlayers; i++) {
+            int newIndex = (i + 1) % numPlayers; // Rotate the order
+            tempDrawDecks[newIndex] = players.get(i).getDrawDeck();
         }
 
-        for (DrawDeck drawDeck : drawDecks) {
-            int newPlayerID = drawDeck.getPlayerID() + 1;
-            if (newPlayerID > highestPlayerID) {
-                newPlayerID = 0;
-            }
-            drawDeck.setPlayerID(newPlayerID);
+        // Update each player's draw deck based on the temporary array
+        for (int i = 0; i < numPlayers; i++) {
+            players.get(i).setDrawDeck(tempDrawDecks[i]);
         }
     }
 
-    public static void runDraft(ArrayList<ClientData> clientData, ArrayList<Player> players, ArrayList<DrawDeck> drawDecks, boolean firstRound) {
-        notifyPlayersOfDraftStart(clientData, drawDecks, players, firstRound);
+    public static void runDraft(ArrayList<ClientData> clientData, ArrayList<Player> players, boolean firstRound) {
+        notifyPlayersOfDraftStart(clientData, players, firstRound);
         ArrayList<String> messages = new ArrayList<>();
         ExecutorService threadpool = Executors.newFixedThreadPool(clientData.size());
 
         executePlayerTasks(clientData, threadpool, messages);
         waitUntilAllTasksComplete(threadpool);
-        processPlayerDrawMessages(messages, drawDecks, players);
-        rotateDrawDeck(drawDecks);
+        processPlayerDrawMessages(messages, players);
+        rotateDrawDeck(players);
         System.out.println("Draft finished\n");
     }
 
@@ -110,7 +106,7 @@ public class RoundHandler {
         executePlayerTasks(clientData, threadpool, messages);
         waitUntilAllTasksComplete(threadpool);
         processPlayerActivityMessages(messages, players);
-        System.out.println("Activities picks finished\n");
+        System.out.println("Activity picks finished\n");
     }
 
     private static void executePlayerTasks(ArrayList<ClientData> clientData, ExecutorService threadpool, ArrayList<String> messages) {
@@ -144,16 +140,16 @@ public class RoundHandler {
         }
     }
 
-    private static void processPlayerDrawMessages(ArrayList<String> messages, ArrayList<DrawDeck> drawDecks, ArrayList<Player> players) {
+    private static void processPlayerDrawMessages(ArrayList<String> messages, ArrayList<Player> players) {
         for (int i = 0; i < messages.size(); i++) {
             String message = messages.get(i);
-            DrawDeck moveFromDrawDeck = findDrawDeckForMessage(drawDecks, message);
-            DrawDeckCardMovement drawDeckCardMovement = new DrawDeckCardMovement();
             Player player = players.get(Character.getNumericValue(message.charAt(1)));
+            DrawDeck drawDeck = player.getDrawDeck();
+            DrawDeckCardMovement drawDeckCardMovement = new DrawDeckCardMovement();
             PlayerDeck moveToPlayerDeck = player.getPlayerDeck();
             String site = String.valueOf(message.charAt(0));
             player.setTouristSiteVisited(site);
-            drawDeckCardMovement.moveCard(moveFromDrawDeck, moveToPlayerDeck, site);
+            drawDeckCardMovement.moveCard(drawDeck, moveToPlayerDeck, site);
         }
     }
 
@@ -166,16 +162,5 @@ public class RoundHandler {
             }
             player.setMostRecentActivity(message.substring(0, message.length() - 1));
         }
-    }
-
-    private static DrawDeck findDrawDeckForMessage(ArrayList<DrawDeck> drawDecks, String message) {
-        for (DrawDeck drawDeck : drawDecks) {
-            for (Card card : drawDeck.getCards()) {
-                if (card.getSite().equals(String.valueOf(message.charAt(0)))){
-                    return drawDeck;
-                }
-            }
-        }
-        return null; // Handle the case where no draw deck is found
     }
 }

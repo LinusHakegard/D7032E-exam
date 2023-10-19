@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class DrawDeck extends Deck implements iAddableCardDeck{
-    private int playerID;
-    public DrawDeck(int playerID){
-        this.playerID = playerID;
-    }
+
+
     public ArrayList<Card> getCards(){return super.cards;}
     public void drawCard(Card card){super.cards.add(card);}
 
@@ -29,10 +27,4 @@ public class DrawDeck extends Deck implements iAddableCardDeck{
             }
         }
     }
-
-    public void setPlayerID(int playerID){
-        this.playerID = playerID;
-    }
-    public int getPlayerID(){return this.playerID;}
-
 }

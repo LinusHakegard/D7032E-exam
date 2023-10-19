@@ -1,6 +1,7 @@
 package boomerang.server;
 
 import boomerang.cards.Deck;
+import boomerang.cards.DrawDeck;
 import boomerang.cards.PlayerDeck;
 import boomerang.scoring.iScoringStrategy;
 
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 public class Player {
     int playerID;
     PlayerDeck playerDeck;
+
+    DrawDeck drawDeck;
 
     int score;
     int totalThrowCatchScore;
@@ -78,5 +81,13 @@ public class Player {
     }
     public int getPlayerThrowAndCatchScore(){
         return this.totalThrowCatchScore;
+    }
+
+    public void setDrawDeck(DrawDeck drawDeck){
+        this.drawDeck = drawDeck;
+    }
+
+    public DrawDeck getDrawDeck(){
+        return this.drawDeck;
     }
 }
