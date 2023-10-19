@@ -12,6 +12,7 @@ public class ThrowAndCatchStrategy implements iScoringStrategy {
 
         PlayerDeck playerDeck = player.getPlayerDeck();
         score = abs(playerDeck.getLastCard().getNumber() - playerDeck.getFirstCard().getNumber());
+        player.addToPlayerThrowAndCatchScore(score);
         return score;
     }
 }

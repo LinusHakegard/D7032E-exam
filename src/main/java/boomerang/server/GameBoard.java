@@ -8,19 +8,23 @@ import boomerang.cards.GameBoardDeck;
 import boomerang.deckhandling.AustraliaCardLoaderJSON;
 import boomerang.deckhandling.GameboardCardMovement;
 import boomerang.scoring.AustraliaScoringStrategy;
+import boomerang.scoring.MapScores;
+import boomerang.scoring.WinnerCalculator;
 
 import java.util.ArrayList;
 
 
 public class GameBoard {
-    private final int TOTAL_ROUNDS = 3;
-    private final int ROUND_LENGTH = 3;
+    private final int TOTAL_ROUNDS = 2;
+    private final int ROUND_LENGTH = 2;
     private final int DRAW_DECK_START_SIZE = 7;
 
     private int currentRound;
     private int currentDraft;
 
     private String country;
+
+    private MapScores mapScores;
 
     private iCountryActivities activities;
 
@@ -54,6 +58,7 @@ public class GameBoard {
         this.currentDraft = 1;
         this.gameBoardDeck = new GameBoardDeck();
         this.drawDecks = new ArrayList<DrawDeck>();
+        this.mapScores = new MapScores();
 
         if(country.equals("Australia")) {
             this.activities = new AustraliaActivities();
@@ -85,10 +90,15 @@ public class GameBoard {
 
 
     }
-    private void calculateScores(){
+    private void calculateScores(boolean finalRound){
+        mapScores.calculatePlayerMapBonuses(this.players);
+        if(finalRound){
+            mapScores.calculatePlayerVisitScore(this.players);
+        }
         for(Player player : this.players){
             player.calculateScore();
         }
+
     }
     public void runner(){
         initGame();
@@ -97,7 +107,12 @@ public class GameBoard {
         while(this.currentRound <= this.TOTAL_ROUNDS) {
             System.out.println("new round");
             newRoundSetup();
-
+            
+            boolean finalRound = false;
+            if(currentRound == this.TOTAL_ROUNDS){
+                finalRound = true;
+            }
+            
             this.currentDraft = 1;
             roundHandler.runDraft(this.players, this.drawDecks, true);
             this.currentDraft++;
@@ -107,9 +122,12 @@ public class GameBoard {
                 this.currentDraft++;
             }
             roundHandler.runActivityPick(this.players, this.activities.getActivities());
-            calculateScores();
+            calculateScores(finalRound);
             this.currentRound++;
         }
+        Player winner = WinnerCalculator.calculateWinner(this.players);
+        //gör priner object så jag kan printa till alla
+        System.out.println("The winner is: Player " + winner.getPlayerID());
     }
 }
 

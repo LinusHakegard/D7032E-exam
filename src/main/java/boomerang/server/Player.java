@@ -11,7 +11,7 @@ public class Player {
     PlayerDeck playerDeck;
 
     int score;
-
+    int totalThrowCatchScore;
     iScoringStrategy countryScoringStrategy;
 
     ArrayList<String> usedActivities;
@@ -22,6 +22,9 @@ public class Player {
         this.playerDeck = new PlayerDeck();
         this.usedActivities = new ArrayList<>();
         this.touristSitesVisited = new ArrayList<>();
+
+        this.score = 0;
+        this.totalThrowCatchScore = 0;
 
     }
     public PlayerDeck getPlayerDeck(){return this.playerDeck;}
@@ -59,4 +62,21 @@ public class Player {
         return this.mostRecentActivity;
     }
 
+    public ArrayList<String> getTouristSitesVisited(){
+        return this.touristSitesVisited;
+    }
+
+    public void addToPlayerScore(int score){
+        this.score += score;
+    }
+    public void addToPlayerThrowAndCatchScore(int score){
+        this.totalThrowCatchScore += score;
+    }
+
+    public int getScore(){
+        return this.score;
+    }
+    public int getPlayerThrowAndCatchScore(){
+        return this.totalThrowCatchScore;
+    }
 }

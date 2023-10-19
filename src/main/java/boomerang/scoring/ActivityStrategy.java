@@ -1,16 +1,15 @@
 package boomerang.scoring;
 
 import boomerang.cards.Card;
-import boomerang.cards.PlayerDeck;
 import boomerang.server.Player;
 
 import java.util.Hashtable;
 
 import static java.lang.Math.abs;
 
-public class ActivityScoring implements iScoringStrategy{
+public class ActivityStrategy implements iScoringStrategy{
     Hashtable<Integer, Integer> amountToScoreMap;
-    public ActivityScoring(){
+    public ActivityStrategy(){
         amountToScoreMap = new Hashtable<>();
         amountToScoreMap.put(0, 0);
         amountToScoreMap.put(1, 0);
@@ -27,8 +26,10 @@ public class ActivityScoring implements iScoringStrategy{
 
         int amount = 0;
         for(Card card :  player.getPlayerDeck().getCards()){
-            if(card.getActivity().equals(activityChoice)){
-                amount += 1;
+            if(card.getActivity() != null){
+                if(card.getActivity().equals(activityChoice)){
+                    amount += 1;
+                }
             }
         }
 
