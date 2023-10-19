@@ -21,7 +21,7 @@ public class GameServer {
                 ObjectInputStream inFromClient = new ObjectInputStream(connectionSocket.getInputStream());
                 ObjectOutputStream outToClient = new ObjectOutputStream(connectionSocket.getOutputStream());
 
-                this.gameBoard.addClient(new ClientData(i, connectionSocket, inFromClient, outToClient));
+                this.gameBoard.addClient(new ClientData(i, inFromClient, outToClient));
                 this.gameBoard.addPlayer(new Player(i));
 
                 //fixa med message to client sender

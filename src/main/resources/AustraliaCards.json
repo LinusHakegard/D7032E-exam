@@ -22,8 +22,8 @@
     "name": "Margaret River",
     "site": "C",
     "number": 1,
-    "activity": "Kangaroos",
-    "animal": null,
+    "activity": null,
+    "animal": "Kangaroos",
     "collection": "Shells"
   },
   {

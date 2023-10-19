@@ -11,6 +11,7 @@ import boomerang.scoring.AustraliaScoringStrategy;
 import boomerang.scoring.MapScores;
 import boomerang.scoring.WinnerCalculator;
 
+
 import java.util.ArrayList;
 
 
@@ -101,10 +102,21 @@ public class GameBoard {
         }
 
     }
+
+    public void announceWinner() {
+        Player winner = WinnerCalculator.calculateWinner(this.players);
+
+        String message = "The winner is: Player " + winner.getPlayerID();
+        System.out.println(message);
+
+        for (Player player : this.players) {
+            MessageToClientSender.sendMessageToPlayer(clientData.get(player.getPlayerID()).getOutToClient(), message);
+        }
+    }
     public void runner(){
         initGame();
 
-        RoundHandler roundHandler = new RoundHandler(clientData);
+
         while(this.currentRound <= this.TOTAL_ROUNDS) {
             System.out.println("new round");
             newRoundSetup();
@@ -115,20 +127,18 @@ public class GameBoard {
             }
             
             this.currentDraft = 1;
-            roundHandler.runDraft(this.players, this.drawDecks, true);
+            RoundHandler.runDraft(this.clientData, this.players, this.drawDecks, true);
             this.currentDraft++;
             while(this.currentDraft <= this.ROUND_LENGTH){
                 System.out.println("new draft");
-                roundHandler.runDraft(this.players, this.drawDecks, false);
+                RoundHandler.runDraft(this.clientData, this.players, this.drawDecks, false);
                 this.currentDraft++;
             }
-            roundHandler.runActivityPick(this.players, this.activities.getActivities());
+            RoundHandler.runActivityPick(this.clientData, this.players, this.activities.getActivities());
             calculateScores(finalRound);
             this.currentRound++;
         }
-        Player winner = WinnerCalculator.calculateWinner(this.players);
-        //gör priner object så jag kan printa till alla
-        System.out.println("The winner is: Player " + winner.getPlayerID());
+        announceWinner();
     }
 }
 

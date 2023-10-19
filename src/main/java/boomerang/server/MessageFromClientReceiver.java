@@ -3,15 +3,10 @@ import java.io.ObjectInputStream;
 import java.io.IOException;
 
 
-//GÖRA STATISK SEN
+
 public class MessageFromClientReceiver {
-    private final ObjectInputStream inFromClient;
 
-    public MessageFromClientReceiver(ObjectInputStream inFromClient) {
-        this.inFromClient = inFromClient;
-    }
-
-    public String waitForMessage() {
+    public static String waitForMessage(ObjectInputStream inFromClient) {
         try {
             return (String) inFromClient.readObject();
         } catch (IOException | ClassNotFoundException e) {
