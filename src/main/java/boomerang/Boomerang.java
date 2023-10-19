@@ -6,15 +6,15 @@ import java.io.*;
 
 public class Boomerang {
     public static void main(String[] args) throws Exception{
-        //arg 0 = number of players, arg 1 = number of bots, arg 2 = game edition
+        //arg 0 = number of players, arg 1 = game edition
 
-        if(args.length == 3){
+        if(args.length == 2){
             try{
-                GameServer server = new GameServer(Integer.parseInt(args[0]),args[2]);
+                GameServer server = new GameServer(Integer.parseInt(args[0]),args[1]);
                 server.waitForPlayers();
             }
             catch(IOException e){
-                System.out.println("oh");
+                System.out.println("error");
             }
         }
         //arg 0 = server ip
@@ -24,7 +24,7 @@ public class Boomerang {
                 client.run();
             }
             catch(IOException e){
-                System.out.println("oh");
+                System.out.println("error");
             }
         }
     }
