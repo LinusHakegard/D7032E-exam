@@ -121,33 +121,40 @@ public class GameBoard {
             MessageToClientSender.sendMessageToPlayer(clientData.get(player.getPlayerID()).getOutToClient(), message);
         }
     }
-    public void runner(){
+    public void runner() {
         initGame();
 
-
-        while(this.currentRound <= this.TOTAL_ROUNDS) {
+        while (this.currentRound <= this.TOTAL_ROUNDS) {
             System.out.println("new round");
-            newRoundSetup();
-
-            boolean finalRound = false;
-            if(currentRound == this.TOTAL_ROUNDS){
-                finalRound = true;
-            }
-            
-            this.currentDraft = 1;
-            RoundHandler.runDraft(this.clientData, this.players, this.drawDecks, true);
-            this.currentDraft++;
-            while(this.currentDraft <= this.ROUND_LENGTH){
-                System.out.println("new draft");
-                RoundHandler.runDraft(this.clientData, this.players, this.drawDecks, false);
-                this.currentDraft++;
-            }
-            RoundHandler.runActivityPick(this.clientData, this.players, this.activities.getActivities());
-            calculateScores(finalRound);
+            runSingleRound();
             this.currentRound++;
-            announceScores();
         }
+
         announceWinner();
+    }
+
+    private void runSingleRound() {
+        newRoundSetup();
+        boolean finalRound = (currentRound == this.TOTAL_ROUNDS);
+
+        runDraftRounds(finalRound);
+        runActivityPickRound();
+        calculateScores(finalRound);
+        announceScores();
+    }
+
+    private void runDraftRounds(boolean finalRound) {
+        this.currentDraft = 1;
+
+        while (this.currentDraft <= this.ROUND_LENGTH) {
+            System.out.println("new draft");
+            RoundHandler.runDraft(this.clientData, this.players, this.drawDecks, !finalRound);
+            this.currentDraft++;
+        }
+    }
+
+    private void runActivityPickRound() {
+        RoundHandler.runActivityPick(this.clientData, this.players, this.activities.getActivities());
     }
 }
 
