@@ -3,9 +3,9 @@ package boomerang.server;
 import boomerang.server.australia.AustraliaActivities;
 import boomerang.server.cards.DrawDeck;
 import boomerang.server.cards.GameBoardDeck;
-import boomerang.server.deckhandling.AustraliaCardLoaderJSON;
+import boomerang.server.australia.AustraliaCardLoaderJSON;
 import boomerang.server.deckhandling.GameboardCardMovement;
-import boomerang.server.scoring.AustraliaScoringStrategy;
+import boomerang.server.australia.AustraliaScoringStrategy;
 import boomerang.server.scoring.MapScores;
 import boomerang.server.scoring.WinnerCalculator;
 

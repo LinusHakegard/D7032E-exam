@@ -1,6 +1,7 @@
-package boomerang.server.scoring;
+package boomerang.server.australia;
 
 import boomerang.server.Player;
+import boomerang.server.scoring.*;
 
 import java.util.ArrayList;
 
