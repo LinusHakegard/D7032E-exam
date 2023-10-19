@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class GameBoard {
     private final int TOTAL_ROUNDS = 2;
-    private final int ROUND_LENGTH = 2;
+    private final int ROUND_LENGTH = 3;
     private final int DRAW_DECK_START_SIZE = 7;
 
     private int currentRound;
@@ -137,18 +137,24 @@ public class GameBoard {
         newRoundSetup();
         boolean finalRound = (currentRound == this.TOTAL_ROUNDS);
 
-        runDraftRounds(finalRound);
+        runDraftRounds();
         runActivityPickRound();
         calculateScores(finalRound);
         announceScores();
     }
 
-    private void runDraftRounds(boolean finalRound) {
+    private void runDraftRounds() {
         this.currentDraft = 1;
 
         while (this.currentDraft <= this.ROUND_LENGTH) {
             System.out.println("new draft");
-            RoundHandler.runDraft(this.clientData, this.players);
+
+            boolean lastRotation = false;
+            if(this.currentDraft + 1 == this.ROUND_LENGTH){
+                lastRotation = true;
+            }
+
+            RoundHandler.runDraft(this.clientData, this.players, lastRotation);
             this.currentDraft++;
         }
     }

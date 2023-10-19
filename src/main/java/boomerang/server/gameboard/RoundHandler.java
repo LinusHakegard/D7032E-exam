@@ -70,16 +70,24 @@ public class RoundHandler {
         }
     }
 
-    public static void rotateDrawDeck(ArrayList<Player> players) {
+    public static void rotateDrawDeck(ArrayList<Player> players, boolean lastRotation) {
         int numPlayers = players.size();
 
         // Create a temporary array to store the draw decks
         DrawDeck[] tempDrawDecks = new DrawDeck[numPlayers];
 
-        // Copy the draw decks to the temporary array in a rotated order
-        for (int i = 0; i < numPlayers; i++) {
-            int newIndex = (i + 1) % numPlayers; // Rotate the order
-            tempDrawDecks[newIndex] = players.get(i).getDrawDeck();
+        if (lastRotation) {
+            // Rotate counterclockwise
+            for (int i = 0; i < numPlayers; i++) {
+                int newIndex = (i - 1 + numPlayers) % numPlayers; // Rotate counterclockwise
+                tempDrawDecks[newIndex] = players.get(i).getDrawDeck();
+            }
+        } else {
+            // Rotate clockwise
+            for (int i = 0; i < numPlayers; i++) {
+                int newIndex = (i + 1) % numPlayers; // Rotate clockwise
+                tempDrawDecks[newIndex] = players.get(i).getDrawDeck();
+            }
         }
 
         // Update each player's draw deck based on the temporary array
@@ -88,7 +96,7 @@ public class RoundHandler {
         }
     }
 
-    public static void runDraft(ArrayList<ClientData> clientData, ArrayList<Player> players) {
+    public static void runDraft(ArrayList<ClientData> clientData, ArrayList<Player> players, boolean isLastDraft) {
         notifyPlayersOfDraftStart(clientData, players);
         ArrayList<String> messages = new ArrayList<>();
         ExecutorService threadpool = Executors.newFixedThreadPool(clientData.size());
@@ -96,7 +104,7 @@ public class RoundHandler {
         executePlayerTasks(clientData, threadpool, messages);
         waitUntilAllTasksComplete(threadpool);
         processPlayerDrawMessages(messages, players);
-        rotateDrawDeck(players);
+        rotateDrawDeck(players, isLastDraft);
         System.out.println("Draft finished\n");
     }
 
