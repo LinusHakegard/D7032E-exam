@@ -1,5 +1,9 @@
 package boomerang.server;
 
+import boomerang.server.gameboard.ClientData;
+import boomerang.server.gameboard.GameBoard;
+import boomerang.server.gameboard.Player;
+
 import java.io.*;
 import java.net.*;
 

@@ -1,10 +1,14 @@
-package boomerang.server;
+package boomerang.server.gameboard;
 
 import boomerang.server.cards.Card;
 import boomerang.server.cards.CardPrinter;
 import boomerang.server.cards.DrawDeck;
 import boomerang.server.cards.PlayerDeck;
 import boomerang.server.deckhandling.DrawDeckCardMovement;
+import boomerang.server.gameboard.ClientData;
+import boomerang.server.gameboard.MessageFromClientReceiver;
+import boomerang.server.gameboard.MessageToClientSender;
+import boomerang.server.gameboard.Player;
 
 import java.io.ObjectInputStream;
 import java.util.concurrent.ExecutorService;

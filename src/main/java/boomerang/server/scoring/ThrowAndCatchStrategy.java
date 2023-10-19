@@ -1,7 +1,7 @@
 package boomerang.server.scoring;
 
 import boomerang.server.cards.PlayerDeck;
-import boomerang.server.Player;
+import boomerang.server.gameboard.Player;
 
 import static java.lang.Math.abs;
 

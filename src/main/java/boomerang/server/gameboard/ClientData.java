@@ -1,4 +1,4 @@
-package boomerang.server;
+package boomerang.server.gameboard;
 
 import java.io.*;
 import java.net.*;

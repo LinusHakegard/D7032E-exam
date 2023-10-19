@@ -1,6 +1,6 @@
 package boomerang.server.australia;
 
-import boomerang.server.iCountryActivities;
+import boomerang.server.gameboard.iCountryActivities;
 
 import java.util.ArrayList;
 import java.util.Arrays;

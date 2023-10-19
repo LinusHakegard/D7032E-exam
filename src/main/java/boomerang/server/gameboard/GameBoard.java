@@ -1,4 +1,4 @@
-package boomerang.server;
+package boomerang.server.gameboard;
 
 import boomerang.server.australia.AustraliaActivities;
 import boomerang.server.cards.DrawDeck;

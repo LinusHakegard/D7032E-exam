@@ -1,6 +1,6 @@
 package boomerang.server.cards;
 
-import boomerang.server.Player;
+import boomerang.server.gameboard.Player;
 
 import java.util.ArrayList;
 
