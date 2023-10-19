@@ -1,4 +1,4 @@
-package boomerang.scoring;
+package boomerang.server.scoring;
 
 import boomerang.server.Player;
 
@@ -10,7 +10,7 @@ public class AustraliaScoringStrategy implements iScoringStrategy {
     public AustraliaScoringStrategy() {
         strategies = new ArrayList<>();
 
-        // Add the boomerang.scoring strategies specific to this game mode
+        // Add the boomerang.server.scoring strategies specific to this game mode
         strategies.add(new ThrowAndCatchStrategy());
         strategies.add(new CollectionStrategy());
         strategies.add(new AnimalStrategy());

@@ -1,9 +1,8 @@
 package boomerang.server;
 
-import boomerang.cards.Deck;
-import boomerang.cards.DrawDeck;
-import boomerang.cards.PlayerDeck;
-import boomerang.scoring.iScoringStrategy;
+import boomerang.server.cards.DrawDeck;
+import boomerang.server.cards.PlayerDeck;
+import boomerang.server.scoring.iScoringStrategy;
 
 import java.util.ArrayList;
 

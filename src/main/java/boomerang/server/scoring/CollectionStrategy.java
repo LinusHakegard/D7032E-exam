@@ -1,7 +1,7 @@
-package boomerang.scoring;
+package boomerang.server.scoring;
 
-import boomerang.cards.Card;
-import boomerang.cards.PlayerDeck;
+import boomerang.server.cards.Card;
+import boomerang.server.cards.PlayerDeck;
 import boomerang.server.Player;
 import java.util.Hashtable;
 

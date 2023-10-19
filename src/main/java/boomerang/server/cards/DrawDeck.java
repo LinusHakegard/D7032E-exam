@@ -1,4 +1,4 @@
-package boomerang.cards;
+package boomerang.server.cards;
 
 import java.util.ArrayList;
 import java.util.Iterator;

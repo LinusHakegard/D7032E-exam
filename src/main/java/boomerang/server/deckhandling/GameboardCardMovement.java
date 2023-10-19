@@ -1,6 +1,6 @@
-package boomerang.deckhandling;
+package boomerang.server.deckhandling;
 
-import boomerang.cards.*;
+import boomerang.server.cards.*;
 
 public class GameboardCardMovement{
     public void moveCard (GameBoardDeck gameBoardDeck, iAddableCardDeck moveToDeck){

@@ -1,4 +1,4 @@
-package boomerang.cards;
+package boomerang.server.cards;
 
 public class Card {
     private String name;

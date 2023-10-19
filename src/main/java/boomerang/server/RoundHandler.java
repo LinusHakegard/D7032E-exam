@@ -1,10 +1,10 @@
 package boomerang.server;
 
-import boomerang.cards.Card;
-import boomerang.cards.CardPrinter;
-import boomerang.cards.DrawDeck;
-import boomerang.cards.PlayerDeck;
-import boomerang.deckhandling.DrawDeckCardMovement;
+import boomerang.server.cards.Card;
+import boomerang.server.cards.CardPrinter;
+import boomerang.server.cards.DrawDeck;
+import boomerang.server.cards.PlayerDeck;
+import boomerang.server.deckhandling.DrawDeckCardMovement;
 
 import java.io.ObjectInputStream;
 import java.util.concurrent.ExecutorService;
@@ -16,7 +16,7 @@ public class RoundHandler {
         // Private constructor to prevent instantiation.
     }
 
-    public static void notifyPlayersOfDraftStart(ArrayList<ClientData> clientData, ArrayList<Player> players, boolean firstRound) {
+    public static void notifyPlayersOfDraftStart(ArrayList<ClientData> clientData, ArrayList<Player> players) {
         for (ClientData client : clientData) {
             String availableCardsData;
             String availableCards = "";
@@ -38,9 +38,7 @@ public class RoundHandler {
             MessageToClientSender.sendMessageToPlayer(client.getOutToClient(), allPlayerDecks);
             MessageToClientSender.sendMessageToPlayer(client.getOutToClient(), availableCardsData);
 
-            String message = firstRound
-                    ? "Pick a card to keep as a throw card " + availableCards
-                    : "Pick a card to keep " + availableCards;
+            String message = "Pick a card to keep " + availableCards;
 
             MessageToClientSender.sendMessageToPlayer(client.getOutToClient(), message);
         }
@@ -86,8 +84,8 @@ public class RoundHandler {
         }
     }
 
-    public static void runDraft(ArrayList<ClientData> clientData, ArrayList<Player> players, boolean firstRound) {
-        notifyPlayersOfDraftStart(clientData, players, firstRound);
+    public static void runDraft(ArrayList<ClientData> clientData, ArrayList<Player> players) {
+        notifyPlayersOfDraftStart(clientData, players);
         ArrayList<String> messages = new ArrayList<>();
         ExecutorService threadpool = Executors.newFixedThreadPool(clientData.size());
 

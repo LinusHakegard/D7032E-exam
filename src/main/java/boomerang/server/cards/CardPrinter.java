@@ -1,4 +1,4 @@
-package boomerang.cards;
+package boomerang.server.cards;
 
 import boomerang.server.Player;
 

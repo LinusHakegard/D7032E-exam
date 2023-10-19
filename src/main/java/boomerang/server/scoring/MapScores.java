@@ -1,4 +1,4 @@
-package boomerang.scoring;
+package boomerang.server.scoring;
 
 import boomerang.server.Player;
 

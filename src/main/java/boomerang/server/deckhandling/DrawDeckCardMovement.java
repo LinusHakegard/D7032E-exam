@@ -1,8 +1,7 @@
-package boomerang.deckhandling;
+package boomerang.server.deckhandling;
 
-import boomerang.cards.DrawDeck;
-import boomerang.cards.GameBoardDeck;
-import boomerang.cards.iAddableCardDeck;
+import boomerang.server.cards.DrawDeck;
+import boomerang.server.cards.iAddableCardDeck;
 
 public class DrawDeckCardMovement {
     public void moveCard (DrawDeck drawDeck, iAddableCardDeck moveToDeck, String cardLetter) {

@@ -1,6 +1,6 @@
-package boomerang.scoring;
+package boomerang.server.scoring;
 
-import boomerang.cards.PlayerDeck;
+import boomerang.server.cards.PlayerDeck;
 import boomerang.server.Player;
 
 import static java.lang.Math.abs;

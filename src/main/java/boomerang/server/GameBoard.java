@@ -1,15 +1,13 @@
 package boomerang.server;
 
-
-
-import boomerang.australia.AustraliaActivities;
-import boomerang.cards.DrawDeck;
-import boomerang.cards.GameBoardDeck;
-import boomerang.deckhandling.AustraliaCardLoaderJSON;
-import boomerang.deckhandling.GameboardCardMovement;
-import boomerang.scoring.AustraliaScoringStrategy;
-import boomerang.scoring.MapScores;
-import boomerang.scoring.WinnerCalculator;
+import boomerang.server.australia.AustraliaActivities;
+import boomerang.server.cards.DrawDeck;
+import boomerang.server.cards.GameBoardDeck;
+import boomerang.server.deckhandling.AustraliaCardLoaderJSON;
+import boomerang.server.deckhandling.GameboardCardMovement;
+import boomerang.server.scoring.AustraliaScoringStrategy;
+import boomerang.server.scoring.MapScores;
+import boomerang.server.scoring.WinnerCalculator;
 
 
 import java.util.ArrayList;
@@ -150,7 +148,7 @@ public class GameBoard {
 
         while (this.currentDraft <= this.ROUND_LENGTH) {
             System.out.println("new draft");
-            RoundHandler.runDraft(this.clientData, this.players, !finalRound);
+            RoundHandler.runDraft(this.clientData, this.players);
             this.currentDraft++;
         }
     }

@@ -1,6 +1,6 @@
-package boomerang.deckhandling;
+package boomerang.server.deckhandling;
 
-import boomerang.cards.Card;
+import boomerang.server.cards.Card;
 import java.util.ArrayList;
 
 public interface iDeckLoader {

@@ -1,6 +1,6 @@
-package boomerang.deckhandling;
+package boomerang.server.deckhandling;
 
-import boomerang.cards.Card;
+import boomerang.server.cards.Card;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

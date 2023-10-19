@@ -1,6 +1,4 @@
-package boomerang.cards;
-
-import boomerang.cards.Card;
+package boomerang.server.cards;
 
 import java.util.ArrayList;
 //göra abstakt och lägga till metoder
