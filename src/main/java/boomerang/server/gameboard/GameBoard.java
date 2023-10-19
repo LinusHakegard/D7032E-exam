@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 
 public class GameBoard {
-    private final int TOTAL_ROUNDS = 2;
-    private final int ROUND_LENGTH = 3;
+    private final int TOTAL_ROUNDS = 4;
+    private final int ROUND_LENGTH = 7;
     private final int DRAW_DECK_START_SIZE = 7;
 
     private int currentRound;
