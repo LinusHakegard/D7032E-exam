@@ -102,6 +102,14 @@ public class GameBoard {
         }
 
     }
+    public void announceScores(){
+        for(Player player : players){
+            String message = "Player " + player.getPlayerID() + " score: " + player.getScore();
+            for (Player toPlayer : this.players) {
+                MessageToClientSender.sendMessageToPlayer(clientData.get(toPlayer.getPlayerID()).getOutToClient(), message);
+            }
+        }
+    }
 
     public void announceWinner() {
         Player winner = WinnerCalculator.calculateWinner(this.players);
@@ -120,7 +128,7 @@ public class GameBoard {
         while(this.currentRound <= this.TOTAL_ROUNDS) {
             System.out.println("new round");
             newRoundSetup();
-            
+
             boolean finalRound = false;
             if(currentRound == this.TOTAL_ROUNDS){
                 finalRound = true;
@@ -137,6 +145,7 @@ public class GameBoard {
             RoundHandler.runActivityPick(this.clientData, this.players, this.activities.getActivities());
             calculateScores(finalRound);
             this.currentRound++;
+            announceScores();
         }
         announceWinner();
     }
