@@ -1,6 +1,7 @@
 package boomerang.server;
 
 import boomerang.cards.Card;
+import boomerang.cards.CardPrinter;
 import boomerang.cards.DrawDeck;
 import boomerang.cards.PlayerDeck;
 import boomerang.deckhandling.DrawDeckCardMovement;
@@ -36,9 +37,9 @@ public class RoundHandler {
                 }
             }
 
-            throwCardData = getPlayerThrowCardContents(players.get(clientData.getClientID()));
-            allPlayerDecks = getPlayerDeckContents(players);
-            availableCardsData = getDrawDeckContents(drawDeck);
+            throwCardData = CardPrinter.getPlayerThrowCardContents(players.get(clientData.getClientID()));
+            allPlayerDecks = CardPrinter.getPlayerDeckContents(players);
+            availableCardsData = CardPrinter.getDrawDeckContents(drawDeck);
 
             for(Card card : drawDeck.getCards()){
                 availableCards = availableCards + " *" + card.getSite();
@@ -168,7 +169,6 @@ public class RoundHandler {
     private void processPlayerDrawMessages(ArrayList<String> messages, ArrayList<DrawDeck> drawDecks, ArrayList<Player> players) {
         for (int i = 0; i < messages.size(); i++) {
             String message = messages.get(i);
-            System.out.println(message);
 
             DrawDeck moveFromDrawDeck = findDrawDeckForMessage(drawDecks, message);
 
@@ -187,14 +187,12 @@ public class RoundHandler {
      private void processPlayerActivityMessages(ArrayList<String> messages, ArrayList<Player> players) {
         for (int i = 0; i < messages.size(); i++) {
             String message = messages.get(i);
-            System.out.println(message);
+
             Player player = players.get(Character.getNumericValue(message.charAt(message.length() - 1)));
             if(!message.substring(0, message.length() - 1).equals("No activity")){
                 player.addUsedActivity(message.substring(0, message.length() - 1));
             }
             player.setMostRecentActivity(message.substring(0, message.length() - 1));
-
-            System.out.println(player.getUsedActivities());
         }
     }
 
@@ -207,79 +205,5 @@ public class RoundHandler {
             }
         }
         return null; // Handle the case where no draw deck is found
-    }
-
-    //ska göras direkt i deck klasserna
-    private String getPlayerDeckContents(ArrayList<Player> players) {
-        StringBuilder result = new StringBuilder();
-
-        for (Player player : players) {
-            result.append("Player " + player.getPlayerID() + "'s cards (excluding throw card):").append("\n");
-            ArrayList<Card> playerCards = player.getPlayerDeck().getCards();
-
-            for (int i = 1; i < playerCards.size(); i++) { // Start from index 1 to skip the first card
-                Card card = playerCards.get(i);
-                result.append("Name: ").append(card.getName())
-                        .append(" | Number: ").append(card.getNumber())
-                        .append(" | Site: ").append(card.getSite())
-                        .append(" | Region: ").append(card.getRegion())
-                        .append(" | Collection: ").append(card.getCollection())
-                        .append(" | Animal: ").append(card.getAnimal())
-                        .append(" | Activity: ").append(card.getActivity())
-                        .append("\n");
-            }
-
-            result.append("\n");
-        }
-
-        return result.toString();
-    }
-
-    private String getDrawDeckContents(DrawDeck drawDeck) {
-        StringBuilder result = new StringBuilder();
-
-
-        result.append("Available cards: ").append("\n");
-        ArrayList<Card> cards = drawDeck.getCards();
-
-
-        for (int i = 0; i < drawDeck.getCards().size(); i++) {
-            Card card = cards.get(i);
-            result.append("Name: ").append(card.getName())
-                    .append(" | Number: ").append(card.getNumber())
-                    .append(" | Site: ").append(card.getSite())
-                    .append(" | Region: ").append(card.getRegion())
-                    .append(" | Collection: ").append(card.getCollection())
-                    .append(" | Animal: ").append(card.getAnimal())
-                    .append(" | Activity: ").append(card.getActivity())
-                    .append("\n");
-        }
-
-            result.append("\n");
-
-
-        return result.toString();
-    }
-
-    private String getPlayerThrowCardContents(Player player) {
-        StringBuilder result = new StringBuilder();
-        Card card = player.getPlayerDeck().getFirstCard();
-
-        result.append("Your throw card is: ").append("\n");
-        if(card != null) {
-            result.append("Name: ").append(card.getName())
-                    .append(" | Number: ").append(card.getNumber())
-                    .append(" | Site: ").append(card.getSite())
-                    .append(" | Region: ").append(card.getRegion())
-                    .append(" | Collection: ").append(card.getCollection())
-                    .append(" | Animal: ").append(card.getAnimal())
-                    .append(" | Activity: ").append(card.getActivity())
-                    .append("\n");
-
-            result.append("\n");
-        }
-
-
-        return result.toString();
     }
 }
