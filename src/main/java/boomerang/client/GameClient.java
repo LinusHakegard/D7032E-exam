@@ -5,7 +5,7 @@ import java.net.*;
 import java.util.Scanner;
 
 public class GameClient {
-    String serverIP;
+    private final String serverIP;
 
     public GameClient(String serverIP){
         this.serverIP = serverIP;
@@ -38,7 +38,6 @@ public class GameClient {
                     outToServer.writeObject(inputLine);
                 }
             }
-
         }
         catch (IOException | ClassNotFoundException e) {
             System.out.println("oops client");

@@ -8,12 +8,14 @@ import java.io.*;
 import java.net.*;
 
 public class GameServer {
-    int numberPlayers;
-    GameBoard gameBoard;
+    private final int numberPlayers;
+    private GameBoard gameBoard;
     public GameServer(int numberPlayers, String country){
         this.numberPlayers = numberPlayers;
         this.gameBoard = new GameBoard(country);
     }
+
+    //waits for players to connect and adds data to the gameboard
     public void waitForPlayers() throws Exception{
         final int PORT = 2048;
 
@@ -28,20 +30,12 @@ public class GameServer {
                 this.gameBoard.addClient(new ClientData(i, inFromClient, outToClient));
                 this.gameBoard.addPlayer(new Player(i));
 
-                //fixa med message to client sender
                 outToClient.writeObject("You are player: " + i);
                 System.out.println("Player" + i + " joined" + "\n");
-
-
-
-                //tillfälliga test grejer
-                /*outToClient.writeObject("Yo bro");
-                Scanner in = new Scanner(System.in);
-                outToClient.writeObject(in.nextLine());*/
             }
         }
         catch (IOException e) {
-           System.out.println("oops server");
+           System.out.println("error");
         }
         gameBoard.runner();
     }

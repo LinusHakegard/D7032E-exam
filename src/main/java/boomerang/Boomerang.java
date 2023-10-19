@@ -6,7 +6,7 @@ import java.io.*;
 
 public class Boomerang {
     public static void main(String[] args) throws Exception{
-        //arg 0 = number of players, arg 1 = game edition
+        //runs as server arg 0 = number of players, arg 1 = game edition
         if(args.length == 2){
             try{
                 int argValue = Integer.parseInt(args[0]);
@@ -20,7 +20,7 @@ public class Boomerang {
                 System.out.println("error");
             }
         }
-        //arg 0 = server ip
+        //runs as client arg 0 = server ip
         else if(args.length == 1){
             try{
                 GameClient client = new GameClient(args[0]);
